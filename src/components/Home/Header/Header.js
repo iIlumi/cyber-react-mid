@@ -1,11 +1,21 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
+import './Header.css';
+
+
+// important ko dùng được
+const activeLinkStyle = (isActive) => ({
+  fontWeight: isActive ? 'bold' : 400,
+  backgroundColor: isActive ? '#fff' : 'transparent',
+  color: isActive ? '#343a40' : 'rgba(255,255,255,.5)',
+});
 
 export default function Header() {
   return (
     <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
-      <a className="navbar-brand" href="/">
+      <NavLink className="navbar-brand" to="/">
         Cyberlearn
-      </a>
+      </NavLink>
       <button
         className="navbar-toggler d-lg-none"
         type="button"
@@ -18,19 +28,31 @@ export default function Header() {
       <div className="collapse navbar-collapse" id="collapsibleNavId">
         <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
           <li className="nav-item">
-            <a className="nav-link" href="/home">
-              Home{' '}
-            </a>
+            <NavLink
+              style={({ isActive }) => activeLinkStyle(isActive)}
+              className="nav-link"
+              to="/home"
+            >
+              Home
+            </NavLink>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/about">
+            <NavLink
+              style={({ isActive }) => activeLinkStyle(isActive)}
+              className="nav-link"
+              to="/about"
+            >
               About
-            </a>
+            </NavLink>
           </li>
           <li className="nav-item dropdown">
-            <a className="nav-link" href="/contact">
+            <NavLink
+              style={({ isActive }) => activeLinkStyle(isActive)}
+              className="nav-link"
+              to="/contact"
+            >
               Contact
-            </a>
+            </NavLink>
           </li>
         </ul>
         <form className="form-inline my-2 my-lg-0">
