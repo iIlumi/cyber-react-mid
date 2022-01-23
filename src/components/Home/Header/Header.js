@@ -2,7 +2,6 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './Header.css';
 
-
 // important ko dùng được
 const activeLinkStyle = (isActive) => ({
   fontWeight: isActive ? 'bold' : 400,
@@ -52,6 +51,17 @@ export default function Header() {
               to="/contact"
             >
               Contact
+            </NavLink>
+          </li>
+          <li className="nav-item dropdown">
+            <NavLink
+              // activeClassName="activeNavItem"
+              // activeStyle={{ fontWeight: 'bold' }}
+              style={({ isActive }) => activeLinkStyle(isActive)}
+              className="nav-link"
+              to="/login"
+            >
+              Login
             </NavLink>
           </li>
         </ul>
