@@ -12,8 +12,8 @@ const activeLinkStyle = (isActive) => ({
 export default function Header() {
   return (
     <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
-      <NavLink className="navbar-brand" to="/">
-        Cyberlearn
+      <NavLink className="navbar-brand text-danger" to="/">
+        Cyberpunk
       </NavLink>
       <button
         className="navbar-toggler d-lg-none"

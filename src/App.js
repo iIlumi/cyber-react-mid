@@ -2,8 +2,10 @@ import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
 import Header from './components/Home/Header/Header';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
+import Detail from './pages/Detail/Detail';
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
+import PageNotFound from './pages/PageNotFound/PageNotFound';
 
 function App() {
   return (
@@ -15,7 +17,9 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/detail/:id" element={<Detail />} />
         <Route path="/" element={<Home />} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
   );
