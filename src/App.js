@@ -7,6 +7,8 @@ import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import PageNotFound from './pages/PageNotFound/PageNotFound';
 import Profile from './pages/Profile/Profile';
+import ToDoList from './pages/ToDoList/ToDoList';
+import ToDoListRFC from './pages/ToDoList/ToDoListRFC';
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/detail/:id" element={<Detail />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/todolistrcc" element={<ToDoList />} />
+        <Route path="/todolistrfc" element={<ToDoListRFC />} />
 
         <Route path="/" element={<Home />} />
         <Route path="*" element={<PageNotFound />} />
