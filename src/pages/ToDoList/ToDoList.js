@@ -5,6 +5,9 @@ import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import Axios from 'axios';
 
+const url = 'http://svcy.myclass.vn/api/ToDoList/';
+// http://svcy.myclass.vn/swagger
+
 export default class ToDoList extends Component {
   state = {
     taskList: [],
@@ -16,11 +19,9 @@ export default class ToDoList extends Component {
     },
   };
 
-  // http://svcy.myclass.vn/swagger
-
   getTaskList = () => {
     let promise = Axios({
-      url: 'http://svcy.myclass.vn/api/ToDoList/GetAllTask',
+      url: url + 'GetAllTask',
       method: 'GET',
     });
 
@@ -75,9 +76,9 @@ export default class ToDoList extends Component {
     console.log(this.state.values.taskName);
     console.log('e.target:', e.target);
     let promise = Axios({
-      url: 'http://svcy.myclass.vn/api/ToDoList/AddTask',
+      url: url + 'AddTask',
       method: 'POST',
-      // Cấu trúc data trong POST phải xem API 
+      // Cấu trúc data trong POST phải xem API
       data: { taskName: this.state.values.taskName },
     });
 
@@ -93,6 +94,46 @@ export default class ToDoList extends Component {
     });
   };
 
+  //Hàm xử lý xóa task
+  delTask = (taskName) => {
+    let promise = Axios({
+      url: `${url}deleteTask?taskName=${taskName}`,
+      method: 'DELETE',
+    });
+
+    console.log('promise:', promise);
+    promise
+      .then((result) => {
+        alert(result.data);
+        this.getTaskList();
+      })
+      .catch((errors) => {
+        alert(errors.response.data);
+      });
+  };
+
+  //Hàm toggle task status
+  toggleTaskStatus = (taskName, status) => {
+    // const urlApi = `${
+    //   url + status ? 'rejectTask' : 'doneTask'
+    // }?taskName=${taskName}`;
+    // url như trên lại ko dùng được -> ko nhận url khai báo
+
+    let promise = Axios({
+      url: `${url}${status ? 'rejectTask' : 'doneTask'}?taskName=${taskName}`,
+      method: 'PUT',
+    });
+
+    promise.then((res) => {
+      alert(res.data);
+      this.getTaskList();
+    });
+
+    promise.catch((err) => {
+      alert(err.response.data);
+    });
+  };
+
   renderTaskList = (taskStatus) => {
     return this.state.taskList
       .filter((item) => item.status === taskStatus)
@@ -101,10 +142,28 @@ export default class ToDoList extends Component {
           <li key={index}>
             <span>{item.taskName}</span>
             <div className="buttons">
-              <button className="remove">
+              <button
+                className="remove"
+                type="button"
+                onClick={() => {
+                  this.delTask(item.taskName);
+                }}
+              >
                 <i className="fa fa-trash-alt" />
               </button>
-              <button className="complete">
+              <button
+                className="complete"
+                type="button"
+                onClick={() => {
+                  //   taskStatus
+                  //     ? this.rejectTask(item.taskName)
+                  //     : this.checkTask(item.taskName);
+                  this.toggleTaskStatus(item.taskName, taskStatus);
+                }}
+              >
+                  {/* Có thể dùng điều kiện để chọn render icon khác nhau mỗi status
+                  Ở đây thì tận dụng css và render ẩn icon với status ko đúng
+                  */}
                 <i className="far fa-check-circle" />
                 <i className="fas fa-check-circle" />
               </button>
