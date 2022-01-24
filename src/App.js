@@ -9,6 +9,7 @@ import PageNotFound from './pages/PageNotFound/PageNotFound';
 import Profile from './pages/Profile/Profile';
 import ToDoList from './pages/ToDoList/ToDoList';
 import ToDoListRFC from './pages/ToDoList/ToDoListRFC';
+import ToDoListRedux from './pages/ToDoList/ToDoListRedux';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/todolistrcc" element={<ToDoList />} />
         <Route path="/todolistrfc" element={<ToDoListRFC />} />
+        <Route path="/todolistredux" element={<ToDoListRedux />} />
 
         <Route path="/" element={<Home />} />
         <Route path="*" element={<PageNotFound />} />
