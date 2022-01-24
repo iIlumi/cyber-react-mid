@@ -22,6 +22,8 @@ export default function Detail(props) {
    * path trong v6 cũng ko còn kết hợp với regex được
    * match.path -> v5 sẽ trả về pattern url nhưng v6 hiện ko có tương đương
    *
+   * https://stackoverflow.com/questions/69967745/react-router-v6-access-a-url-parameter
+   * -> HOC for class in v6
    */
 
   console.log('props:', props);

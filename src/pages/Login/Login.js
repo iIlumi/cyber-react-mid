@@ -29,6 +29,7 @@ export default function Login(props) {
       //replace thay đổi nội dung path tương ứng
       // rops.history.replace('/home');
       navigate('/home');
+      localStorage.setItem('userLogin', JSON.stringify(userLogin));
 
       // =========================
       //   old react v5
