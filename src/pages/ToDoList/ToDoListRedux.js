@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet';
 import Axios from 'axios';
-import { useSelector, useDispatch } from 'react-redux';
-import { GET_TASK_API } from '../../redux/constants/ToDoListConst';
+import React, { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTaskListApi } from '../../redux/actions/ToDoListAction';
+
 
 const url = 'http://svcy.myclass.vn/api/ToDoList/';
 
@@ -23,25 +24,7 @@ export default function ToDoListRFC() {
   });
 
   const getTaskList = () => {
-    let promise = Axios({
-      url: url + 'GetAllTask',
-      method: 'GET',
-    });
-
-    promise
-      .then((result) => {
-        console.log(result.data);
-        dispatch({
-          type: GET_TASK_API,
-          taskList: result.data,
-        });
-
-        console.log('thành công');
-      })
-      .catch((err) => {
-        console.log('thất bại');
-        console.log(err.response.data);
-      });
+    dispatch(getTaskListApi());
   };
 
   useEffect(() => {
