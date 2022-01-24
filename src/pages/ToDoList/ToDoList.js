@@ -42,7 +42,7 @@ export default class ToDoList extends Component {
       console.log(err.response.data);
     });
   };
-  
+
   componentDidMount = () => {
     this.getTaskList();
   };
@@ -162,7 +162,7 @@ export default class ToDoList extends Component {
                   this.toggleTaskStatus(item.taskName, taskStatus);
                 }}
               >
-                  {/* Có thể dùng điều kiện để chọn render icon khác nhau mỗi status
+                {/* Có thể dùng điều kiện để chọn render icon khác nhau mỗi status
                   Ở đây thì tận dụng css và render ẩn icon với status ko đúng
                   */}
                 <i className="far fa-check-circle" />
@@ -187,7 +187,7 @@ export default class ToDoList extends Component {
           <div className="card__body">
             <div className="card__content">
               <div className="card__title">
-                <h2>My Tasks</h2>
+                <h2>My Tasks RCC</h2>
                 <p>September 9,2020</p>
               </div>
               <div className="form-group">

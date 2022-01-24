@@ -43,8 +43,79 @@ export default function ToDoListRFC() {
     return () => {};
   }, []);
 
+  const handleChange = (e) => {
+    const { value, name } = e.target;
+    // console.log(value, name);
+
+    const newValues = { ...state.values, [name]: value };
+    const newErrors = { ...state.errors };
+
+    const regexString = /^[a-z A-Z]+$/;
+
+    if (!regexString.test(value) || value.trim() === '') {
+      newErrors[name] = name + ' invalid !';
+    } else {
+      newErrors[name] = '';
+    }
+
+    setState({
+      ...state,
+      values: newValues,
+      errors: newErrors,
+    });
+  };
+
   const addTask = (e) => {
     e.preventDefault(); //Chặn sự kiện reload lại trang
+    console.log(state.values.taskName);
+
+    let promise = Axios({
+      url: url + 'AddTask',
+      method: 'POST',
+      data: { taskName: state.values.taskName },
+    });
+
+    promise
+      .then((result) => {
+        // alert(result.data);
+        getTaskList();
+      })
+      .catch((errors) => {
+        alert(errors.response.data);
+      });
+  };
+
+  const delTask = (taskName) => {
+    let promise = Axios({
+      url: `${url}deleteTask?taskName=${taskName}`,
+      method: 'DELETE',
+    });
+
+    console.log('promise:', promise);
+    promise
+      .then((result) => {
+        alert(result.data);
+        getTaskList();
+      })
+      .catch((errors) => {
+        alert(errors.response.data);
+      });
+  };
+
+  const toggleTaskStatus = (taskName, status) => {
+    let promise = Axios({
+      url: `${url}${status ? 'rejectTask' : 'doneTask'}?taskName=${taskName}`,
+      method: 'PUT',
+    });
+
+    promise.then((res) => {
+      alert(res.data);
+      getTaskList();
+    });
+
+    promise.catch((err) => {
+      alert(err.response.data);
+    });
   };
 
   const renderTaskList = (taskStatus) => {
@@ -59,7 +130,7 @@ export default function ToDoListRFC() {
                 className="remove"
                 type="button"
                 onClick={() => {
-                  this.delTask(item.taskName);
+                  delTask(item.taskName);
                 }}
               >
                 <i className="fa fa-trash-alt" />
@@ -68,7 +139,7 @@ export default function ToDoListRFC() {
                 className="complete"
                 type="button"
                 onClick={() => {
-                  this.toggleTaskStatus(item.taskName, taskStatus);
+                  toggleTaskStatus(item.taskName, taskStatus);
                 }}
               >
                 {taskStatus ? (
@@ -95,18 +166,23 @@ export default function ToDoListRFC() {
       <form className="card__body" onSubmit={addTask}>
         <div className="card__content">
           <div className="card__title">
-            <h2>My Tasks</h2>
+            <h2>My Tasks RFC</h2>
             <p>September 9,2020</p>
           </div>
-          <div className="card__add">
-            <input
-              id="newTask"
-              type="text"
-              placeholder="Enter an activity..."
-            />
-            <button id="addItem">
-              <i className="fa fa-plus" />
-            </button>
+          <div className="form-group">
+            <div className="card__add">
+              <input
+                id="newTask"
+                type="text"
+                placeholder="Enter an activity..."
+                name="taskName"
+                onChange={handleChange}
+              />
+              <button id="addItem" type="submit" onClick={addTask}>
+                <i className="fa fa-plus" />
+              </button>
+            </div>
+            <span className="text text-danger">{state.errors.taskName}</span>
           </div>
           <div className="card__todo">
             {/* Uncompleted tasks */}
@@ -125,7 +201,7 @@ export default function ToDoListRFC() {
 }
 
 /**
- * Ở đây đưa form vào bên trong card luôn 
+ * Ở đây đưa form vào bên trong card luôn
  * -> khỏi sinh thêm cấp của cây
- * 
+ *  TODO Vẫn còn vấn đề form reset
  */
