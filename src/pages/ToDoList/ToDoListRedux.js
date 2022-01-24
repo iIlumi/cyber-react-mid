@@ -2,8 +2,12 @@ import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTaskListApi } from '../../redux/actions/ToDoListAction';
-
+import {
+  addTaskApi,
+  delTaskApi,
+  getTaskListApi,
+  toggleTaskStatusApi,
+} from '../../redux/actions/ToDoListAction';
 
 const url = 'http://svcy.myclass.vn/api/ToDoList/';
 
@@ -59,53 +63,15 @@ export default function ToDoListRFC() {
     e.preventDefault(); //Chặn sự kiện reload lại trang
     console.log(state.values.taskName);
 
-    let promise = Axios({
-      url: url + 'AddTask',
-      method: 'POST',
-      data: { taskName: state.values.taskName },
-    });
-
-    promise
-      .then((result) => {
-        // alert(result.data);
-        getTaskList();
-      })
-      .catch((errors) => {
-        alert(errors.response.data);
-      });
+    dispatch(addTaskApi(state.values.taskName));
   };
 
   const delTask = (taskName) => {
-    let promise = Axios({
-      url: `${url}deleteTask?taskName=${taskName}`,
-      method: 'DELETE',
-    });
-
-    console.log('promise:', promise);
-    promise
-      .then((result) => {
-        alert(result.data);
-        getTaskList();
-      })
-      .catch((errors) => {
-        alert(errors.response.data);
-      });
+    dispatch(delTaskApi(taskName));
   };
 
   const toggleTaskStatus = (taskName, status) => {
-    let promise = Axios({
-      url: `${url}${status ? 'rejectTask' : 'doneTask'}?taskName=${taskName}`,
-      method: 'PUT',
-    });
-
-    promise.then((res) => {
-      alert(res.data);
-      getTaskList();
-    });
-
-    promise.catch((err) => {
-      alert(err.response.data);
-    });
+    dispatch(toggleTaskStatusApi(taskName, status));
   };
 
   const renderTaskList = (taskStatus) => {
