@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function BaiTapToDoListSaga(props) {
   const dispatch = useDispatch();
+  const {taskList} = useSelector(state => state.ToDoListReducer)
 
   let [state, setState] = useState({
-    taskList: [],
     values: {
       taskName: '',
     },
@@ -50,7 +50,7 @@ export default function BaiTapToDoListSaga(props) {
   const toggleTaskStatus = (taskName, status) => {};
 
   const renderTaskList = (taskStatus) => {
-    return state.taskList
+    return taskList
       .filter((item) => item.status === taskStatus)
       .map((item, index) => {
         return (
