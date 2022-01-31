@@ -4,8 +4,7 @@
 // });
 
 import Axios from 'axios';
-import { GET_TASK_API } from '../constants/ToDoListConst';
-import Profile from '../../pages/Profile/Profile';
+import { RENDER_TASK } from '../constants/ToDoListConst';
 
 /**
  *
@@ -33,7 +32,7 @@ export const getTaskListApi = () => {
       });
 
       dispatch({
-        type: GET_TASK_API,
+        type: RENDER_TASK,
         taskList: data,
       });
     } catch (err) {
@@ -46,7 +45,7 @@ export const getTaskListApi = () => {
 export const addTaskApi = (taskName) => async (dispatch) => {
   try {
     const res = await Axios({
-      url: url + 'AddTask1sda',
+      url: url + 'AddTask',
       method: 'POST',
       data: { taskName: taskName },
     });

@@ -1,5 +1,5 @@
-import Axios from 'axios';
-import React, { useEffect, useState } from 'react';
+// import Axios from 'axios';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -9,7 +9,7 @@ import {
   toggleTaskStatusApi,
 } from '../../redux/actions/ToDoListAction';
 
-const url = 'http://svcy.myclass.vn/api/ToDoList/';
+// const url = 'http://svcy.myclass.vn/api/ToDoList/';
 
 export default function ToDoListRFC() {
   //Lấy tasklist từ redux về
@@ -27,15 +27,17 @@ export default function ToDoListRFC() {
     },
   });
 
-  const getTaskList = () => {
+  const getTaskList = useCallback(() => {
+    console.log('new getTaskList');
     dispatch(getTaskListApi());
-  };
+  }, [dispatch]);
 
   useEffect(() => {
+    console.log('useEffect run');
     getTaskList();
 
     return () => {};
-  }, []);
+  }, [getTaskList]);
 
   const handleChange = (e) => {
     const { value, name } = e.target;
@@ -117,12 +119,12 @@ export default function ToDoListRFC() {
         <link rel="stylesheet" href="/cssHelmet/Todolist.css" />
       </Helmet>
       <div className="card__header">
-        <img src={require('./bg.png')} />
+        <img src={require('./bg.png')} alt="todo redux bg" />
       </div>
       <form className="card__body" onSubmit={addTask}>
         <div className="card__content">
           <div className="card__title">
-            <h2>My Tasks RFC</h2>
+            <h2>My Tasks Redux</h2>
             <p>September 9,2020</p>
           </div>
           <div className="form-group">

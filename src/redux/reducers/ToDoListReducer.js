@@ -1,12 +1,12 @@
-import { GET_TASK_API } from '../constants/ToDoListConst';
+import { RENDER_TASK } from '../constants/ToDoListConst';
 
 const initialState = {
   taskList: [],
 };
 
-export default (state = initialState, action) => {
+const ToDoListReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_TASK_API:
+    case RENDER_TASK:
       state.taskList = action.taskList;
       return { ...state };
 
@@ -14,3 +14,5 @@ export default (state = initialState, action) => {
       return state;
   }
 };
+
+export default ToDoListReducer;
