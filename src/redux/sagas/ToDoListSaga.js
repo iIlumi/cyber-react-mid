@@ -3,7 +3,11 @@ import { call, delay, put, take, takeLatest } from 'redux-saga/effects';
 import { toDoListService } from '../../services/ToDoListService';
 import { STATUS_CODE } from '../../util/constants/settingSystem';
 import { DISPLAY_LOADING, HIDE_LOADING } from '../constants/LoadingConst';
-import { GET_TASK_API } from '../constants/ToDoListConst';
+import {
+  ADD_TASK_API,
+  GET_TASKLIST_API,
+  RENDER_TASK,
+} from '../constants/ToDoListConst';
 
 // const url = 'http://svcy.myclass.vn/api/ToDoList/';
 
@@ -72,6 +76,7 @@ function* getTaskApiAction(action) {
     );
     yield delay(1000);
 
+    // Thật ra ở đây sẽ catch được TH api đúng url nhưng status # 200
     if (status !== STATUS_CODE.SUCCESS) {
       console.log('STATUS_CODE error');
     }
@@ -79,7 +84,7 @@ function* getTaskApiAction(action) {
     console.log('action getTaskApiAction:', action);
     //Sau khi lấy giá trị thành công dùng put (giống dispatch bên thunk)
     yield put({
-      type: GET_TASK_API,
+      type: RENDER_TASK,
       taskList: data,
     });
 
@@ -92,10 +97,39 @@ function* getTaskApiAction(action) {
 }
 
 export function* theoDoiActionGetTaskApi() {
-  yield takeLatest('getTaskApiAction', getTaskApiAction);
+  yield takeLatest(GET_TASKLIST_API, getTaskApiAction);
 }
 
 /*
     31/01/2021 Danh viết chức năng getTask
     Action saga lấy danh sách task từ api 
 */
+
+function* addTaskApiAction(action) {
+  console.log(' addTaskApiAction(action):', action);
+  const { taskName } = action;
+  //Gọi api
+  try {
+    const { data, status } = yield call(() => {
+      return toDoListService.addTaskApi(taskName);
+    });
+    
+    console.log('data:', data)
+    if (status === STATUS_CODE.SUCCESS) {
+      yield put({
+        type: GET_TASKLIST_API,
+      });
+    } else {
+      console.log('STATUS_CODE error');
+    }
+  } catch (err) {
+    //
+    console.log(err);
+  }
+  //Hiển thị loading
+  //thành công thì load lại task = cách gọi lại action saga load tasklist
+}
+
+export function* theoDoiActionAddTaskApi() {
+  yield takeLatest(ADD_TASK_API, addTaskApiAction);
+}

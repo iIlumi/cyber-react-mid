@@ -1,6 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+  ADD_TASK_API,
+  GET_TASKLIST_API,
+} from '../../redux/constants/ToDoListConst';
 
 export default function BaiTapToDoListSaga(props) {
   const dispatch = useDispatch();
@@ -15,20 +19,20 @@ export default function BaiTapToDoListSaga(props) {
     },
   });
 
-  const getTaskList = () => {
+  const getTaskList = useCallback(() => {
     //Dispatch action saga
     dispatch({
-      type: 'getTaskApiAction',
+      type: GET_TASKLIST_API,
       data: 'abc',
     });
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     //Gọi hàm getTaskList
     getTaskList();
 
     return () => {};
-  }, []);
+  }, [getTaskList]);
 
   const handleChange = (e) => {
     const { value, name } = e.target;
@@ -51,7 +55,13 @@ export default function BaiTapToDoListSaga(props) {
     });
   };
 
-  const addTask = (e) => {};
+  const addTask = (e) => {
+    e.preventDefault();
+    dispatch({
+      type: ADD_TASK_API,
+      taskName: state.values.taskName,
+    });
+  };
 
   //Hàm xử lý xóa task
   const delTask = (taskName) => {};
@@ -121,7 +131,7 @@ export default function BaiTapToDoListSaga(props) {
         Dispatch action saga getTaskAPI
       </button>
       <div className="card__header">
-        <img src={require('./bg.png')} alt="bg-img"/>
+        <img src={require('./bg.png')} alt="bg-img" />
       </div>
       <form className="card__body" onSubmit={addTask}>
         <div className="card__content">

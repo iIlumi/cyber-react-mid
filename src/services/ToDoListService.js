@@ -1,13 +1,25 @@
 import Axios from 'axios';
 import { DOMAIN } from '../util/constants/settingSystem';
 
+// http://svcy.myclass.vn/swagger/ui/index
+
 export class ToDoListService {
-  constructor() {}
+  // constructor() {}
 
   getTaskApi = () => {
     return Axios({
       url: `${DOMAIN}/ToDoList/GetAllTask`,
       method: 'GET',
+    });
+  };
+
+  addTaskApi = (taskName) => {
+    return Axios({
+      url: `${DOMAIN}/ToDoList/addTask`,
+      method: 'POST',
+      data: {
+        taskName: taskName,
+      },
     });
   };
 }
