@@ -11,11 +11,13 @@ import ToDoList from './pages/ToDoList/ToDoList';
 import ToDoListRFC from './pages/ToDoList/ToDoListRFC';
 import ToDoListRedux from './pages/ToDoList/ToDoListRedux';
 import BaiTapToDoListSaga from './pages/BaiTapToDoListSaga/BaiTapToDoListSaga';
+import LoadingComponent from './components/GlobalSetting/LoadingComponent/LoadingComponent';
 
 function App() {
   return (
     <BrowserRouter>
       <Header />
+      <LoadingComponent />
       <Routes>
         <Route path="/home" element={<Home />} />
         <Route path="/contact" element={<Contact />} />

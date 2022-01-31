@@ -1,5 +1,7 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import ToDoListReducer from './reducers/ToDoListReducer';
+import LoadingReducer from './reducers/LoadingReducer';
+
 import reduxThunk from 'redux-thunk';
 
 // middleware saga
@@ -11,6 +13,7 @@ const middleWareSaga = createSagaMiddleware();
 const rootReducer = combineReducers({
   //reducer khai báo tại đây
   ToDoListReducer,
+  LoadingReducer,
 });
 
 const store = createStore(
