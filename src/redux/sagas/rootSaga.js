@@ -19,6 +19,8 @@ export function* rootSaga() {
     //Nghiệp vụ theo dõi các action saga todolist
     ToDoListSaga.theoDoiActionGetTaskApi(),
     ToDoListSaga.theoDoiActionAddTaskApi(),
+    ToDoListSaga.theoDoiActionDeleteTask(),
+    ToDoListSaga.theoDoiActionToggleTask(),
 
     //Nghiệp ...
   ]);

@@ -5,8 +5,10 @@ import { STATUS_CODE } from '../../util/constants/settingSystem';
 import { DISPLAY_LOADING, HIDE_LOADING } from '../constants/LoadingConst';
 import {
   ADD_TASK_API,
+  DELETE_TASK_API,
   GET_TASKLIST_API,
   RENDER_TASK,
+  TOGGLE_TASK_API,
 } from '../constants/ToDoListConst';
 
 // const url = 'http://svcy.myclass.vn/api/ToDoList/';
@@ -113,8 +115,8 @@ function* addTaskApiAction(action) {
     const { data, status } = yield call(() => {
       return toDoListService.addTaskApi(taskName);
     });
-    
-    console.log('data:', data)
+
+    console.log('data:', data);
     if (status === STATUS_CODE.SUCCESS) {
       yield put({
         type: GET_TASKLIST_API,
@@ -132,4 +134,55 @@ function* addTaskApiAction(action) {
 
 export function* theoDoiActionAddTaskApi() {
   yield takeLatest(ADD_TASK_API, addTaskApiAction);
+}
+
+/*
+    01/02/2022 Danh viết chức năng deleteTask
+    Action saga nghiệp vụ xóa task
+*/
+
+function* deleteTaskApi(action) {
+  console.log('deleteTaskApi(action):', action);
+  const { taskName } = action;
+  try {
+    //Gọi api deletetask
+    const { status } = yield call(() => {
+      // console.log('data:', data)
+      // log data giống lúc add sẽ ko có
+      // vì api delete trả về object ko có data -> error
+      return toDoListService.deleteTaskApi(taskName);
+    });
+
+    if (status === STATUS_CODE.SUCCESS) {
+      //Nếu thành công thì gọi lại action GET_TASKLIST_API(action saga thực thi)
+      yield put({
+        type: GET_TASKLIST_API,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* theoDoiActionDeleteTask() {
+  yield takeLatest(DELETE_TASK_API, deleteTaskApi);
+}
+
+/*
+    01/02/2022 Danh viết chức năng toggleTask
+    Action saga nghiệp vụ toggle status complete <-> toDo
+    try - assume no 2xx code except 200
+*/
+
+function* toggleTaskApi({ taskName, status }) {
+  try {
+    yield call(() => toDoListService.toggleTaskApi(taskName, status));
+    yield put({ type: GET_TASKLIST_API });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* theoDoiActionToggleTask() {
+  yield takeLatest(TOGGLE_TASK_API, toggleTaskApi);
 }

@@ -3,7 +3,9 @@ import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   ADD_TASK_API,
+  DELETE_TASK_API,
   GET_TASKLIST_API,
+  TOGGLE_TASK_API,
 } from '../../redux/constants/ToDoListConst';
 
 export default function BaiTapToDoListSaga(props) {
@@ -64,9 +66,20 @@ export default function BaiTapToDoListSaga(props) {
   };
 
   //Hàm xử lý xóa task
-  const delTask = (taskName) => {};
+  const delTask = (taskName) => {
+    dispatch({
+      type: DELETE_TASK_API,
+      taskName: taskName,
+    });
+  };
 
-  const toggleTaskStatus = (taskName, status) => {};
+  const toggleTaskStatus = (taskName, status) => {
+    dispatch({
+      type: TOGGLE_TASK_API,
+      taskName: taskName,
+      status,
+    });
+  };
 
   const renderTaskList = (taskStatus) => {
     return taskList

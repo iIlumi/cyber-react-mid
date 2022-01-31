@@ -22,6 +22,23 @@ export class ToDoListService {
       },
     });
   };
+
+  deleteTaskApi = (taskName) =>
+    Axios({
+      url: `${DOMAIN}/ToDoList/deleteTask?taskName=${taskName}`,
+      method: 'DELETE',
+    });
+
+  toggleTaskApi = (taskName, status) =>
+    status
+      ? Axios({
+          url: `${DOMAIN}/ToDoList/rejectTask?taskName=${taskName}`,
+          method: 'PUT',
+        })
+      : Axios({
+          url: `${DOMAIN}/ToDoList/doneTask?taskName=${taskName}`,
+          method: 'PUT',
+        });
 }
 
 // Gom export và khởi tạo cùng lúc, viết riêng vẫn ok
