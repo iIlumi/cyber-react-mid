@@ -74,16 +74,17 @@ export default function Header() {
             </NavLink>
           </li>
           <li className="nav-item dropdown">
-            <a
+            <span
               className="nav-link dropdown-toggle"
-              href="#"
+              // href="#"
+              // fix warning
               id="dropdownId"
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false"
             >
               Bài tập
-            </a>
+            </span>
             <div className="dropdown-menu" aria-labelledby="dropdownId">
               <NavLink className="dropdown-item" to="/todolistrcc">
                 To do list rcc

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 export default function BaiTapToDoListSaga(props) {
   const dispatch = useDispatch();
-  const {taskList} = useSelector(state => state.ToDoListReducer)
+  const { taskList } = useSelector((state) => state.ToDoListReducer);
 
   let [state, setState] = useState({
     values: {
@@ -15,9 +15,18 @@ export default function BaiTapToDoListSaga(props) {
     },
   });
 
-  const getTaskList = () => {};
+  const getTaskList = () => {
+    //Dispatch action saga
+    dispatch({
+      type: 'getTaskApiAction',
+      data: 'abc',
+    });
+  };
 
   useEffect(() => {
+    //Gọi hàm getTaskList
+    getTaskList();
+
     return () => {};
   }, []);
 
@@ -95,6 +104,16 @@ export default function BaiTapToDoListSaga(props) {
         className="btn btn-success"
         onClick={() => {
           dispatch({
+            type: 'getTaskApiActionWithTake',
+          });
+        }}
+      >
+        Demo root saga loop
+      </button>
+      <button
+        className="btn btn-success"
+        onClick={() => {
+          dispatch({
             type: 'getTaskApiAction',
           });
         }}
@@ -102,7 +121,7 @@ export default function BaiTapToDoListSaga(props) {
         Dispatch action saga getTaskAPI
       </button>
       <div className="card__header">
-        <img src={require('./bg.png')} />
+        <img src={require('./bg.png')} alt="bg-img"/>
       </div>
       <form className="card__body" onSubmit={addTask}>
         <div className="card__content">

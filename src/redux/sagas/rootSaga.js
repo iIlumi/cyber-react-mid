@@ -1,59 +1,6 @@
-import Axios from 'axios';
-import { call, fork, put, take, takeLatest } from 'redux-saga/effects';
-import { GET_TASK_API } from '../constants/ToDoListConst';
-
-const url = 'http://svcy.myclass.vn/api/ToDoList/';
-
-/*redux 2 loại action: 
-    Loại 1: action => object (action thường)
-    Loại 2: action => function (thường dùng để xử lý api hoặc gọi các action khác )
-
-    Ở đây demo saga nên nhết vô chung rootsaga
-    thực chất action saga có thể để chung action creator bình thường vẫn được
-
-*/
-
-// Cheatsheet saga blocking - non-blocking
-// https://redux-saga.js.org/docs/api#blocking--non-blocking
-
-function* getTaskApiWithTake() {
-  while (true) {
-    yield take('getTaskApiActionWithTake');
-    // theo dõi action -> xem action nào dispatch mới làm các công việc bên dưới
-    // https://redux-saga.js.org/docs/api#takepattern
-    console.log('getTaskApi');
-    // call api dispatch lên reducer ....
-
-    // Code vậy sẽ chạy xen kẽ
-    yield take('getTaskApiActionWithTake');
-    console.log('getTaskApi2');
-  }
-}
-
-// =========================================================================
-/**
- * 
- * https://redux-saga.js.org/docs/api/#callfn-args
- * https://redux-saga.js.org/docs/api/#putaction
- * https://redux-saga.js.org/docs/api#takelatestpattern-saga-args
- * 
- * TakeEvery, takeLatest phải truyền para thứ 2 là saga func gen
- * 
- */
-
-function* getTaskApi(action) {
-  const { data, status } = yield call(() => {
-    return Axios({
-      url: url + 'GetAllTask',
-      method: 'GET',
-    });
-  });
-  //Sau khi lấy giá trị thành công dùng put (giống dispatch bên thunk)
-  yield put({
-    type: GET_TASK_API,
-    taskList: data,
-  });
-}
+import { all, fork } from 'redux-saga/effects';
+import * as ToDoListSaga from './ToDoListSaga';
+// Hoặc có thể viết kiểu destructering bình thường như dòng import trên
 
 // các action bình thường vẫn chia để riêng ra,
 // Saga chỉ qản lý riêng các action saga (dispatch function)
@@ -61,13 +8,19 @@ function* getTaskApi(action) {
 export function* rootSaga() {
   //   console.log('rootSaga');
 
-  yield fork(getTaskApiWithTake);
+  yield fork(ToDoListSaga.getTaskApiWithTake);
   // non blocking chạy k cần chờ
   // https://redux-saga.js.org/docs/api#forkfn-args
 
   console.log('done yield fork getTaskApiWithTake');
 
-  yield takeLatest('getTaskApiAction', getTaskApi);
+  // https://redux-saga.js.org/docs/api/#alleffects---parallel-effects
+  yield all([
+    //Nghiệp vụ theo dõi các action saga todolist
+    ToDoListSaga.theoDoiActionGetTaskApi(),
+
+    //Nghiệp ...
+  ]);
 
   console.log('final root saga');
 }
@@ -81,7 +34,9 @@ export function* rootSaga() {
     call            Yes
     delay           Yes
     take            Yes
-    
+    all	            Blocks if there is a blocking effect 
+                    in the array or object
+                    
     fork            No
     takeEvery	    No
     takeLatest	    No
