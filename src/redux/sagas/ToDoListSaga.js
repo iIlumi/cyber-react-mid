@@ -1,5 +1,5 @@
 // import Axios from 'axios';
-import { call, put, take, takeLatest } from 'redux-saga/effects';
+import { call, delay, put, take, takeLatest } from 'redux-saga/effects';
 import { toDoListService } from '../../services/ToDoListService';
 import { GET_TASK_API } from '../constants/ToDoListConst';
 
@@ -43,7 +43,15 @@ export function* getTaskApiWithTake() {
  */
 
 function* getTaskApiAction(action) {
+  //put giống dispatch action
+  yield put({
+    type: 'DISPLAY_LOADING',
+  });
+
+  yield delay(1000);
+
   console.log('action getTaskApiAction:', action);
+
   // Tại sao phải yield call mà ko gọi bình thường
   const { data, status } = yield call(
     // nên tách các axios ra mục service chung
@@ -53,7 +61,7 @@ function* getTaskApiAction(action) {
     //   method: 'GET',
     // });
     // }
-    // Chú ý là gọi instance từ class chứ ko phải là ToDoService 
+    // Chú ý là gọi instance từ class chứ ko phải là ToDoService
     // (toDo viết thường)
     // Call nhận callback nên ko có ()
     toDoListService.getTaskApi
@@ -62,6 +70,10 @@ function* getTaskApiAction(action) {
   yield put({
     type: GET_TASK_API,
     taskList: data,
+  });
+
+  yield put({
+    type: 'HIDE_LOADING',
   });
 }
 
