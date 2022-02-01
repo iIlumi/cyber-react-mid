@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet';
 import Axios from 'axios';
 
@@ -15,7 +15,7 @@ export default function ToDoListRFC() {
     },
   });
 
-  const getTaskList = () => {
+  const getTaskList = useCallback(() => {
     let promise = Axios({
       url: url + 'GetAllTask',
       method: 'GET',
@@ -24,10 +24,10 @@ export default function ToDoListRFC() {
     promise
       .then((result) => {
         console.log(result.data);
-        setState({
+        setState((state) => ({
           ...state,
           taskList: result.data,
-        });
+        }));
 
         console.log('thành công');
       })
@@ -35,13 +35,13 @@ export default function ToDoListRFC() {
         console.log('thất bại');
         console.log(err.response.data);
       });
-  };
+  }, []);
 
   useEffect(() => {
     getTaskList();
 
     return () => {};
-  }, []);
+  }, [getTaskList]);
 
   const handleChange = (e) => {
     const { value, name } = e.target;
@@ -161,7 +161,7 @@ export default function ToDoListRFC() {
         <link rel="stylesheet" href="/cssHelmet/Todolist.css" />
       </Helmet>
       <div className="card__header">
-        <img src={require('./bg.png')} />
+        <img src={require('./bg.png')} alt="todo rfc bg" />
       </div>
       <form className="card__body" onSubmit={addTask}>
         <div className="card__content">

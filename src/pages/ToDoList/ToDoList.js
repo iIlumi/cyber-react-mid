@@ -182,7 +182,7 @@ export default class ToDoList extends Component {
             <link rel="stylesheet" href="/cssHelmet/Todolist.css" />
           </Helmet>
           <div className="card__header">
-            <img src={require('./bg.png')} />
+            <img src={require('./bg.png')} alt="toDo bg" />
           </div>
           <div className="card__body">
             <div className="card__content">

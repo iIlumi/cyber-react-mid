@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 export default function PageNotFound(props) {
   // https://reactrouter.com/docs/en/v6/upgrading/v5#replace-useroutematch-with-usematch
