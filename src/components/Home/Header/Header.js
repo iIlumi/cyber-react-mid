@@ -73,6 +73,15 @@ export default function Header() {
               Profile
             </NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink
+              style={({ isActive }) => activeLinkStyle(isActive)}
+              className="nav-link"
+              to="/demohocmodal"
+            >
+              Demo HOC
+            </NavLink>
+          </li>
           <li className="nav-item dropdown">
             <span
               className="nav-link dropdown-toggle"

@@ -12,17 +12,20 @@ import ToDoListRFC from './pages/ToDoList/ToDoListRFC';
 import ToDoListRedux from './pages/ToDoList/ToDoListRedux';
 import BaiTapToDoListSaga from './pages/BaiTapToDoListSaga/BaiTapToDoListSaga';
 import LoadingComponent from './components/GlobalSetting/LoadingComponent/LoadingComponent';
+import DemoHOCModal from './pages/DemoHOCModal/DemoHOCModal';
+import Modal from './HOC/Modal/Modal';
 
 function App() {
   return (
     <BrowserRouter>
       <Header />
+      <Modal />
       <LoadingComponent />
       <Routes>
         <Route path="/home" element={<Home />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
-        <Route path="/about" element={<About />} />
+
         <Route path="/login" element={<Login />} />
         <Route path="/detail/:id" element={<Detail />} />
         <Route path="/profile" element={<Profile />} />
@@ -30,6 +33,7 @@ function App() {
         <Route path="/todolistrfc" element={<ToDoListRFC />} />
         <Route path="/todolistredux" element={<ToDoListRedux />} />
         <Route path="/todolistsaga" element={<BaiTapToDoListSaga />} />
+        <Route path="/demohocmodal" element={<DemoHOCModal />} />
 
         <Route path="/" element={<Home />} />
         <Route path="*" element={<PageNotFound />} />
