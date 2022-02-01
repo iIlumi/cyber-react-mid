@@ -14,7 +14,7 @@ export default function DemoHOCModal() {
   const dispatch = useDispatch();
 
   // tuy nhiên nếu viết dạng nêu obj, 
-  // bắt buộc phải đưa vào trong
+  //  bắt buộc phải đưa vào trong
   // Để sử dụng được hooks của React từ DemoHOCModal -> scope
   const LoginWithSlideDown = new SlideDown(Register);
 

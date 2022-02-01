@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Header from './components/Home/Header/Header';
+// import Header from './components/Home/Header/Header';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
 import Detail from './pages/Detail/Detail';
@@ -14,29 +14,58 @@ import BaiTapToDoListSaga from './pages/BaiTapToDoListSaga/BaiTapToDoListSaga';
 import LoadingComponent from './components/GlobalSetting/LoadingComponent/LoadingComponent';
 import DemoHOCModal from './pages/DemoHOCModal/DemoHOCModal';
 import Modal from './HOC/Modal/Modal';
+import { HomeTemplate } from './templates/HomeTemplate/HomeTemplate';
 
 function App() {
   return (
     <BrowserRouter>
-      <Header />
+      {/* <Header /> */}
       <Modal />
       <LoadingComponent />
       <Routes>
-        <Route path="/home" element={<Home />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/about" element={<About />} />
+        {/* Router v5 Router render props default */}
+        {/* <Route
+          exact
+          path="/home"
+          render={(propsRoute) => {
+            return (
+              <div>
+                <Header />
+                <Home {...propsRoute} />
+              </div>
+            );
+          }}
+        /> */}
+        {/* <Route path="/home" element={<Home />} /> */}
+        <Route path="/home" element={<HomeTemplate ele={Home} />} />
 
-        <Route path="/login" element={<Login />} />
-        <Route path="/detail/:id" element={<Detail />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/todolistrcc" element={<ToDoList />} />
-        <Route path="/todolistrfc" element={<ToDoListRFC />} />
-        <Route path="/todolistredux" element={<ToDoListRedux />} />
-        <Route path="/todolistsaga" element={<BaiTapToDoListSaga />} />
-        <Route path="/demohocmodal" element={<DemoHOCModal />} />
+        <Route path="/contact" element={<HomeTemplate ele={Contact} />} />
+        <Route path="/about" element={<HomeTemplate ele={About} />} />
 
-        <Route path="/" element={<Home />} />
-        <Route path="*" element={<PageNotFound />} />
+        <Route path="/login" element={<HomeTemplate ele={Login} />} />
+        <Route path="/detail/:id" element={<HomeTemplate ele={Detail} />} />
+        <Route path="/profile" element={<HomeTemplate ele={Profile} />} />
+        
+        <Route path="/todolistrcc" element={<HomeTemplate ele={ToDoList} />} />
+        <Route
+          path="/todolistrfc"
+          element={<HomeTemplate ele={ToDoListRFC} />}
+        />
+        <Route
+          path="/todolistredux"
+          element={<HomeTemplate ele={ToDoListRedux} />}
+        />
+        <Route
+          path="/todolistsaga"
+          element={<HomeTemplate ele={BaiTapToDoListSaga} />}
+        />
+        <Route
+          path="/demohocmodal"
+          element={<HomeTemplate ele={DemoHOCModal} />}
+        />
+
+        <Route path="/" element={<HomeTemplate ele={Home} />} />
+        <Route path="*" element={<HomeTemplate ele={PageNotFound} />} />
       </Routes>
     </BrowserRouter>
   );
