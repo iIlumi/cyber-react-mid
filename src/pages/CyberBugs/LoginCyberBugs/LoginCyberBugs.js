@@ -5,19 +5,24 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { Button, Input } from 'antd';
-import React from 'react';
 import { withFormik } from 'formik';
+import React from 'react';
+import * as Yup from 'yup';
 
 function LoginCyberBugs(props) {
   // console.log('props LoginCyberBugs:', props);
   const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
     props;
+  // touched phải sử dụng chung vói handleBlur,
+  // Tuy nhiên gây ra re-render quá nhiều
+  console.log('touched:', touched);
+  console.log('values:', values);
   return (
     <form
       onSubmit={(ev) => {
         console.log('submit form');
         handleSubmit();
-        ev.preventDefault()
+        ev.preventDefault();
       }}
       // Nếu viết kiểu trên sẽ sub và reload
       // onSubmit={handleSubmit}
@@ -41,8 +46,10 @@ function LoginCyberBugs(props) {
             placeholder="email"
             autoComplete="current-email"
             prefix={<UserOutlined />}
+            onBlur={handleBlur}
           />
         </div>
+        {touched.email && <div className="text-danger">{errors.email}</div>}
         <div className="d-flex mt-3">
           <Input
             onChange={(e) => handleChange(e)}
@@ -55,7 +62,7 @@ function LoginCyberBugs(props) {
             prefix={<LockOutlined />}
           />
         </div>
-
+        <div className="text-danger">{errors.password}</div>
         <Button
           size="large"
           style={{
@@ -131,6 +138,21 @@ const LoginCyberBugsWithFormik = withFormik({
   },
 
   displayName: 'LoginCyberBugs',
+
+  // =====================================================
+
+  // https://formik.org/docs/guides/validation#displaying-error-messages
+  // https://www.npmjs.com/package/yup
+
+  validationSchema: Yup.object().shape({
+    email: Yup.string()
+      .required('Email is required!')
+      .email('email is invalid!'),
+    password: Yup.string()
+      .required('Password is required!')
+      .min(6, 'password must have min 6 characters')
+      .max(32, 'password  have max 32 characters'),
+  }),
 })(LoginCyberBugs);
 
 export default LoginCyberBugsWithFormik;
