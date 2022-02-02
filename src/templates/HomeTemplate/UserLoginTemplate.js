@@ -3,7 +3,7 @@ import { Button, Layout } from 'antd';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const {  Sider, Content } = Layout;
+const { Sider, Content } = Layout;
 
 /**
  *
@@ -23,7 +23,8 @@ export const UserLoginTemplate = (props) => {
           width={window.innerWidth / 2}
           style={{
             height: window.innerHeight,
-            backgroundImage: 'url(https://picsum.photos/500)',
+            backgroundImage: 'url(https://picsum.photos/2000)',
+            backgroundSize: '100%',
           }}
         >
           <Button type="primary" size="large" onClick={() => navigate('/home')}>

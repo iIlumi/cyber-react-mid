@@ -1,14 +1,29 @@
 import {
-    LockOutlined,
-    //   FacebookOutlined,
-    TwitterOutlined, UserOutlined
+  LockOutlined,
+  //   FacebookOutlined,
+  TwitterOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
 import { Button, Input } from 'antd';
 import React from 'react';
+import { withFormik } from 'formik';
 
-export default function LoginCyberBugs(props) {
+function LoginCyberBugs(props) {
+  // console.log('props LoginCyberBugs:', props);
+  const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
+    props;
   return (
-    <form className="container" style={{ height: window.innerHeight }}>
+    <form
+      onSubmit={(ev) => {
+        console.log('submit form');
+        handleSubmit();
+        ev.preventDefault()
+      }}
+      // Nếu viết kiểu trên sẽ sub và reload
+      // onSubmit={handleSubmit}
+      className="container"
+      style={{ height: window.innerHeight }}
+    >
       <div
         className="d-flex flex-column justify-content-center align-items-center"
         style={{ height: window.innerHeight }}
@@ -19,6 +34,7 @@ export default function LoginCyberBugs(props) {
 
         <div className="d-flex mt-3">
           <Input
+            onChange={handleChange}
             style={{ width: '100%', minWidth: 300 }}
             name="email"
             size="large"
@@ -29,9 +45,10 @@ export default function LoginCyberBugs(props) {
         </div>
         <div className="d-flex mt-3">
           <Input
+            onChange={(e) => handleChange(e)}
             style={{ width: '100%', minWidth: 300 }}
             type="password"
-            name="email"
+            name="password"
             size="large"
             placeholder="password"
             autoComplete="current-password"
@@ -47,6 +64,7 @@ export default function LoginCyberBugs(props) {
             color: '#fff',
           }}
           className="mt-5"
+          htmlType="submit"
         >
           Login
         </Button>
@@ -72,3 +90,47 @@ export default function LoginCyberBugs(props) {
     </form>
   );
 }
+
+// https://formik.org/docs/api/withFormik#example
+// Formik là HOC
+//  Tương tự mapStatToProps
+const LoginCyberBugsWithFormik = withFormik({
+  mapPropsToValues: () => ({
+    email: '',
+    password: '',
+  }),
+
+  // Custom sync validation
+  // validate: (values) => {
+  //   const errors = {};
+
+  //   if (!values.name) {
+  //     errors.name = 'Required';
+  //   }
+
+  //   return errors;
+  // },
+  // Sử dụng yup để validate
+
+  // =====================================================
+  // HOC withFormik ko hỗ trợ handleChange
+  // handChange trong propsToValue chỉ có tác dụng setValue Formik
+
+  // handleChange: (values) => {
+  //   console.log('formik hand change:');
+  //   console.log(values);
+  // },
+  // =====================================================
+
+  handleSubmit: (values, { setSubmitting }) => {
+    console.log('formik handlesubmit', values);
+    // setTimeout(() => {
+    //   alert(JSON.stringify(values, null, 2));
+    //   setSubmitting(false);
+    // }, 1000);
+  },
+
+  displayName: 'LoginCyberBugs',
+})(LoginCyberBugs);
+
+export default LoginCyberBugsWithFormik;
