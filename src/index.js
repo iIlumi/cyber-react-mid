@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from './redux/configStore';
+import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 
 ReactDOM.render(
   <Provider store={store}>
@@ -17,3 +18,14 @@ ReactDOM.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+/**
+ * Material cũng hỗ trợ component-based nhưng control ít hơn
+ * https://material.io/components
+ * https://m3.material.io/components/navigation-bar/overview
+ * Khó customize, css vào hơn
+ * 
+ * https://ant.design/docs/react/introduce
+ * 
+ * 
+ */

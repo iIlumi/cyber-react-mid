@@ -15,6 +15,8 @@ import LoadingComponent from './components/GlobalSetting/LoadingComponent/Loadin
 import DemoHOCModal from './pages/DemoHOCModal/DemoHOCModal';
 import Modal from './HOC/Modal/Modal';
 import { HomeTemplate } from './templates/HomeTemplate/HomeTemplate';
+import { UserLoginTemplate } from './templates/HomeTemplate/UserLoginTemplate';
+import LoginCyberBugs from './pages/CyberBugs/LoginCyberBugs/LoginCyberBugs';
 
 function App() {
   return (
@@ -42,10 +44,18 @@ function App() {
         <Route path="/contact" element={<HomeTemplate ele={Contact} />} />
         <Route path="/about" element={<HomeTemplate ele={About} />} />
 
-        <Route path="/login" element={<HomeTemplate ele={Login} />} />
+        <Route path="/oldlogin" element={<HomeTemplate ele={Login} />} />
+        <Route
+          path="/login"
+          element={<UserLoginTemplate Component={LoginCyberBugs} />}
+        />
+        <Route
+          path="/oldlogin"
+          element={<UserLoginTemplate Component={Login} />}
+        />
         <Route path="/detail/:id" element={<HomeTemplate ele={Detail} />} />
         <Route path="/profile" element={<HomeTemplate ele={Profile} />} />
-        
+
         <Route path="/todolistrcc" element={<HomeTemplate ele={ToDoList} />} />
         <Route
           path="/todolistrfc"

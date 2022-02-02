@@ -44,7 +44,7 @@ export default function Header() {
               About
             </NavLink>
           </li>
-          <li className="nav-item dropdown">
+          <li className="nav-item">
             <NavLink
               style={({ isActive }) => activeLinkStyle(isActive)}
               className="nav-link"
@@ -53,18 +53,18 @@ export default function Header() {
               Contact
             </NavLink>
           </li>
-          <li className="nav-item dropdown">
+          <li className="nav-item">
             <NavLink
               // activeClassName="activeNavItem"
               // activeStyle={{ fontWeight: 'bold' }}
               style={({ isActive }) => activeLinkStyle(isActive)}
               className="nav-link"
-              to="/login"
+              to="/oldlogin"
             >
-              Login
+              Old Login
             </NavLink>
           </li>
-          <li className="nav-item dropdown">
+          <li className="nav-item">
             <NavLink
               style={({ isActive }) => activeLinkStyle(isActive)}
               className="nav-link"
@@ -108,6 +108,15 @@ export default function Header() {
                 To do list saga
               </NavLink>
             </div>
+          </li>
+          <li className="nav-item">
+            <NavLink
+              style={({ isActive }) => activeLinkStyle(isActive)}
+              className="nav-link"
+              to="/login"
+            >
+              Login
+            </NavLink>
           </li>
         </ul>
         <form className="form-inline my-2 my-lg-0">
