@@ -8,6 +8,8 @@ import { Button, Input } from 'antd';
 import { withFormik } from 'formik';
 import React from 'react';
 import * as Yup from 'yup';
+import { connect } from 'react-redux';
+import { USER_SIGNIN_API } from '../../../redux/constants/Cyberbugs/Cyberbugs';
 
 function LoginCyberBugs(props) {
   // console.log('props LoginCyberBugs:', props);
@@ -15,8 +17,8 @@ function LoginCyberBugs(props) {
     props;
   // touched phải sử dụng chung vói handleBlur,
   // Tuy nhiên gây ra re-render quá nhiều
-  console.log('touched:', touched);
-  console.log('values:', values);
+  // console.log('touched:', touched);
+  // console.log('values:', values);
   return (
     <form
       onSubmit={(ev) => {
@@ -129,7 +131,18 @@ const LoginCyberBugsWithFormik = withFormik({
   // },
   // =====================================================
 
-  handleSubmit: (values, { setSubmitting }) => {
+  handleSubmit: (values, { props, setSubmitting }) => {
+    let action = {
+      type: USER_SIGNIN_API,
+      userLogin: {
+        email: values.email,
+        password: values.password,
+      },
+    };
+    props.dispatch(action);
+
+    console.log('props:', props);
+    // console.log('setSubmitting:', setSubmitting)
     console.log('formik handlesubmit', values);
     // setTimeout(() => {
     //   alert(JSON.stringify(values, null, 2));
@@ -155,4 +168,4 @@ const LoginCyberBugsWithFormik = withFormik({
   }),
 })(LoginCyberBugs);
 
-export default LoginCyberBugsWithFormik;
+export default connect()(LoginCyberBugsWithFormik);
