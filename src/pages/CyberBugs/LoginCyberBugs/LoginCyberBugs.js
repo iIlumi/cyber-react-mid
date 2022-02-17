@@ -10,6 +10,7 @@ import React from 'react';
 import * as Yup from 'yup';
 import { connect } from 'react-redux';
 import { USER_SIGNIN_API } from '../../../redux/constants/Cyberbugs/Cyberbugs';
+import { signInCyberbugAction } from '../../../redux/actions/CyberBugsActions';
 
 function LoginCyberBugs(props) {
   // console.log('props LoginCyberBugs:', props);
@@ -132,14 +133,8 @@ const LoginCyberBugsWithFormik = withFormik({
   // =====================================================
 
   handleSubmit: (values, { props, setSubmitting }) => {
-    let action = {
-      type: USER_SIGNIN_API,
-      userLogin: {
-        email: values.email,
-        password: values.password,
-      },
-    };
-    props.dispatch(action);
+    // Có thể destruc email, password ở trên
+    props.dispatch(signInCyberbugAction(values.email, values.password));
 
     console.log('props:', props);
     // console.log('setSubmitting:', setSubmitting)
