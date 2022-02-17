@@ -1,25 +1,24 @@
-import Axios from 'axios';
 import {
   call,
-  delay,
-  fork,
-  take,
-  takeEvery,
-  takeLatest,
-  put,
+  delay, put, takeLatest
 } from 'redux-saga/effects';
 import { cyberbugsService } from '../../../services/CyberbugsService';
 import { TOKEN, USER_LOGIN } from '../../../util/constants/settingSystem';
 import { USER_SIGNIN_API } from '../../constants/Cyberbugs/Cyberbugs';
+import { DISPLAY_LOADING, HIDE_LOADING } from '../../constants/LoadingConst';
 
 //Quản lý các action saga
 
 function* signInSaga(action) {
   console.log('action:', action);
 
+  yield put({
+    type: DISPLAY_LOADING,
+  });
+  yield delay(500);
   //Gọi api
   try {
-    const { data, status } = yield call(() =>
+    const { data } = yield call(() =>
       cyberbugsService.signInCyberBugs(action.userLogin)
     );
 
@@ -31,6 +30,10 @@ function* signInSaga(action) {
   } catch (err) {
     console.log(err.response.data);
   }
+
+  yield put({
+    type: HIDE_LOADING,
+  });
 }
 
 export function* theoDoiSignIn() {

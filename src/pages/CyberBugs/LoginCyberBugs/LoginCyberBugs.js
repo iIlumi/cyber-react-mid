@@ -2,19 +2,18 @@ import {
   LockOutlined,
   //   FacebookOutlined,
   TwitterOutlined,
-  UserOutlined,
+  UserOutlined
 } from '@ant-design/icons';
 import { Button, Input } from 'antd';
 import { withFormik } from 'formik';
 import React from 'react';
-import * as Yup from 'yup';
 import { connect } from 'react-redux';
-import { USER_SIGNIN_API } from '../../../redux/constants/Cyberbugs/Cyberbugs';
+import * as Yup from 'yup';
 import { signInCyberbugAction } from '../../../redux/actions/CyberBugsActions';
 
 function LoginCyberBugs(props) {
   // console.log('props LoginCyberBugs:', props);
-  const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
+  const {  touched, errors, handleChange, handleBlur, handleSubmit } =
     props;
   // touched phải sử dụng chung vói handleBlur,
   // Tuy nhiên gây ra re-render quá nhiều
@@ -36,6 +35,9 @@ function LoginCyberBugs(props) {
         className="d-flex flex-column justify-content-center align-items-center"
         style={{ height: window.innerHeight }}
       >
+        <h4 className="text-center font-weight-normal">cyberlearn@gmail.com</h4>
+        <h4 className="text-center font-weight-normal">123456</h4>
+
         <h3 className="text-center" style={{ fontWeight: 300, fontSize: 35 }}>
           Login CyberBugs
         </h3>
@@ -132,8 +134,14 @@ const LoginCyberBugsWithFormik = withFormik({
   // },
   // =====================================================
 
+  // https://formik.org/docs/api/withFormik#the-formikbag
+  // Việc truyền props của redux vào có thể đọc trong docs
+  // setSubmitting() đọc trong link docs trên
+  // Tuy nhiên trong saga ta đã chặn submit manual lại nên cũng ko cần
   handleSubmit: (values, { props, setSubmitting }) => {
-    // Có thể destruc email, password ở trên
+    // Có thể destruct email, password ở trên
+    // setSubmitting(true);
+
     props.dispatch(signInCyberbugAction(values.email, values.password));
 
     console.log('props:', props);

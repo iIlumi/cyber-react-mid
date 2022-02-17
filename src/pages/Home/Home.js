@@ -17,6 +17,7 @@ export default function Home(props) {
 function MyForm(props) {
   const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
   props;
+  console.log('values:', values)
   console.log('touched:', touched)
   return (
     <form onSubmit={handleSubmit}>
