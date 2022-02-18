@@ -2,23 +2,24 @@ import {
   LockOutlined,
   //   FacebookOutlined,
   TwitterOutlined,
-  UserOutlined
+  UserOutlined,
 } from '@ant-design/icons';
 import { Button, Input } from 'antd';
 import { withFormik } from 'formik';
 import React from 'react';
 import { connect } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { signInCyberbugAction } from '../../../redux/actions/CyberBugsActions';
 
 function LoginCyberBugs(props) {
   // console.log('props LoginCyberBugs:', props);
-  const {  touched, errors, handleChange, handleBlur, handleSubmit } =
-    props;
+  const { touched, errors, handleChange, handleBlur, handleSubmit } = props;
   // touched phải sử dụng chung vói handleBlur,
   // Tuy nhiên gây ra re-render quá nhiều
   // console.log('touched:', touched);
   // console.log('values:', values);
+
   return (
     <form
       onSubmit={(ev) => {
@@ -31,6 +32,7 @@ function LoginCyberBugs(props) {
       className="container"
       style={{ height: window.innerHeight }}
     >
+      {/* {console.log('child final props: ', props)} */}
       <div
         className="d-flex flex-column justify-content-center align-items-center"
         style={{ height: window.innerHeight }}
@@ -103,6 +105,8 @@ function LoginCyberBugs(props) {
   );
 }
 
+// Không dùng kiểu Dummy HOC wrap thông thường được do đang bị spagetti code wrap nhau giữa formik và component gốc
+
 // https://formik.org/docs/api/withFormik#example
 // Formik là HOC
 //  Tương tự mapStatToProps
@@ -138,14 +142,22 @@ const LoginCyberBugsWithFormik = withFormik({
   // Việc truyền props của redux vào có thể đọc trong docs
   // setSubmitting() đọc trong link docs trên
   // Tuy nhiên trong saga ta đã chặn submit manual lại nên cũng ko cần
+
   handleSubmit: (values, { props, setSubmitting }) => {
     // Có thể destruct email, password ở trên
     // setSubmitting(true);
 
-    props.dispatch(signInCyberbugAction(values.email, values.password));
+    // Thay vì truyền props history trong router v5 vào đây
+    // -> ít dùng trong thực tế
+    // Dùng thư viện history của ts
 
     console.log('props:', props);
     // console.log('setSubmitting:', setSubmitting)
+
+    props.dispatch(
+      signInCyberbugAction(values.email, values.password, props.history)
+    );
+
     console.log('formik handlesubmit', values);
     // setTimeout(() => {
     //   alert(JSON.stringify(values, null, 2));
@@ -171,4 +183,33 @@ const LoginCyberBugsWithFormik = withFormik({
   }),
 })(LoginCyberBugs);
 
-export default connect()(LoginCyberBugsWithFormik);
+// ko viết được như vậy vì props ko được bảo toàn
+// Gặp vấn đề props bị override ở formik hoặc ở redux
+function HistoryHOCWrapper(Component) {
+  let navigate = useNavigate();
+  // Component.history = navigate;
+  console.log('Component.props in wrapper:', Component.props);
+  return <Component history={navigate} />;
+}
+
+const LoginCyberBugsWithFormik2 = () => {
+  return new HistoryHOCWrapper(LoginCyberBugsWithFormik);
+};
+
+// mapStateToProps, mapDispatchToProps
+
+const reduxConnectHOC = connect()(
+  // mapStateToProps,
+  // mapDispatchToProps
+  // () => {
+  //   return <LoginCyberBugsWithFormik />
+  // }
+  // Viết cách trên ko ok
+  LoginCyberBugsWithFormik
+);
+
+const LoginCyberBugsWithFormik3 = () => {
+  return new HistoryHOCWrapper(reduxConnectHOC);
+};
+
+export default LoginCyberBugsWithFormik3;
