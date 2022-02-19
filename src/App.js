@@ -24,6 +24,9 @@ function App() {
   const history = useNavigate();
   const dispatch = useDispatch();
 
+  // https://stackoverflow.com/questions/70881320/redirect-to-route-from-saga-using-react-router-v6
+  // có 3 cách tuy nhiên dùng thư viện sẽ có khả năng ko tương thích
+  // 
   // https://github.com/remix-run/react-router/issues/7634
   // dispatch được đảm bảo ko thay đổi nhưng useNavigate lại bị -> rerender
   // nếu đưa vào trong arr dependency của useEffect sẽ ko được

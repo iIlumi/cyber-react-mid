@@ -9,6 +9,7 @@ import reduxThunk from 'redux-thunk';
 import createSagaMiddleware from '@redux-saga/core';
 import { rootSaga } from './sagas/rootSaga';
 import { HistoryReducer } from './reducers/HistoryReducer';
+import { UserLoginCyberBugsReducer } from './reducers/UserCyberBugsReducer';
 const middleWareSaga = createSagaMiddleware();
 
 const rootReducer = combineReducers({
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   LoadingReducer,
   ModalReducer,
   HistoryReducer,
+  UserLoginCyberBugsReducer,
 });
 
 const store = createStore(
