@@ -8,7 +8,7 @@ import reduxThunk from 'redux-thunk';
 // middleware saga
 import createSagaMiddleware from '@redux-saga/core';
 import { rootSaga } from './sagas/rootSaga';
-
+import { HistoryReducer } from './reducers/HistoryReducer';
 const middleWareSaga = createSagaMiddleware();
 
 const rootReducer = combineReducers({
@@ -16,6 +16,7 @@ const rootReducer = combineReducers({
   ToDoListReducer,
   LoadingReducer,
   ModalReducer,
+  HistoryReducer,
 });
 
 const store = createStore(

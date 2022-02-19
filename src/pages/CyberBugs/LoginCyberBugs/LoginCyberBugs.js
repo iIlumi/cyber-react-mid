@@ -2,7 +2,7 @@ import {
   LockOutlined,
   //   FacebookOutlined,
   TwitterOutlined,
-  UserOutlined
+  UserOutlined,
 } from '@ant-design/icons';
 import { Button, Input } from 'antd';
 import { withFormik } from 'formik';
@@ -13,8 +13,7 @@ import { signInCyberbugAction } from '../../../redux/actions/CyberBugsActions';
 
 function LoginCyberBugs(props) {
   // console.log('props LoginCyberBugs:', props);
-  const {  touched, errors, handleChange, handleBlur, handleSubmit } =
-    props;
+  const { touched, errors, handleChange, handleBlur, handleSubmit } = props;
   // touched phải sử dụng chung vói handleBlur,
   // Tuy nhiên gây ra re-render quá nhiều
   // console.log('touched:', touched);

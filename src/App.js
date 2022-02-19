@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
 // import Header from './components/Home/Header/Header';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
@@ -17,10 +17,25 @@ import Modal from './HOC/Modal/Modal';
 import { HomeTemplate } from './templates/HomeTemplate/HomeTemplate';
 import { UserLoginTemplate } from './templates/HomeTemplate/UserLoginTemplate';
 import LoginCyberBugs from './pages/CyberBugs/LoginCyberBugs/LoginCyberBugs';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 
 function App() {
+  const history = useNavigate();
+  const dispatch = useDispatch();
+
+  // https://github.com/remix-run/react-router/issues/7634
+  // dispatch được đảm bảo ko thay đổi nhưng useNavigate lại bị -> rerender
+  // nếu đưa vào trong arr dependency của useEffect sẽ ko được
+  // Có pp walk-around tạo 1 RouterUtils dom ảo bọc chức năng lại
+  // Hoặc tạo 1 Dom App-main , để fix ES-Lint, hoặc chấp nhận warning
+  
+  useEffect(() => {
+    dispatch({ type: 'ADD_HISTORY', history: history });
+  }, [dispatch]);
+
   return (
-    <BrowserRouter>
+    <>
       {/* <Header /> */}
       <Modal />
       <LoadingComponent />
@@ -77,7 +92,7 @@ function App() {
         <Route path="/" element={<HomeTemplate ele={Home} />} />
         <Route path="*" element={<HomeTemplate ele={PageNotFound} />} />
       </Routes>
-    </BrowserRouter>
+    </>
   );
 }
 
