@@ -15,7 +15,7 @@ export default function Home(props) {
       Trang chủ
       <MyEnhancedForm />
       {userLoginInfo?.name}
-      <img src={userLoginInfo?.avatar} />
+      <img src={userLoginInfo?.avatar} alt="img alt"/>
     </div>
   );
 }
@@ -35,7 +35,6 @@ function MyForm(props) {
       />
       {touched.name && <div id="feedback">{errors.name}</div>}
       <button type="submit">Submit</button>
-      <h3></h3>
     </form>
   );
 }

@@ -1,24 +1,26 @@
-import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import LoadingComponent from './components/GlobalSetting/LoadingComponent/LoadingComponent';
+import Modal from './HOC/Modal/Modal';
 // import Header from './components/Home/Header/Header';
 import About from './pages/About/About';
+import BaiTapToDoListSaga from './pages/BaiTapToDoListSaga/BaiTapToDoListSaga';
 import Contact from './pages/Contact/Contact';
+import indexCyberBugs from './pages/CyberBugs/indexCyberBugs';
+import LoginCyberBugs from './pages/CyberBugs/LoginCyberBugs/LoginCyberBugs';
+import DemoHOCModal from './pages/DemoHOCModal/DemoHOCModal';
 import Detail from './pages/Detail/Detail';
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import PageNotFound from './pages/PageNotFound/PageNotFound';
 import Profile from './pages/Profile/Profile';
 import ToDoList from './pages/ToDoList/ToDoList';
-import ToDoListRFC from './pages/ToDoList/ToDoListRFC';
 import ToDoListRedux from './pages/ToDoList/ToDoListRedux';
-import BaiTapToDoListSaga from './pages/BaiTapToDoListSaga/BaiTapToDoListSaga';
-import LoadingComponent from './components/GlobalSetting/LoadingComponent/LoadingComponent';
-import DemoHOCModal from './pages/DemoHOCModal/DemoHOCModal';
-import Modal from './HOC/Modal/Modal';
+import ToDoListRFC from './pages/ToDoList/ToDoListRFC';
+import { CyberbugsTemplate } from './templates/HomeTemplate/CyberbugsTemplate';
 import { HomeTemplate } from './templates/HomeTemplate/HomeTemplate';
 import { UserLoginTemplate } from './templates/HomeTemplate/UserLoginTemplate';
-import LoginCyberBugs from './pages/CyberBugs/LoginCyberBugs/LoginCyberBugs';
-import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
 
 function App() {
   const history = useNavigate();
@@ -26,13 +28,13 @@ function App() {
 
   // https://stackoverflow.com/questions/70881320/redirect-to-route-from-saga-using-react-router-v6
   // có 3 cách tuy nhiên dùng thư viện sẽ có khả năng ko tương thích
-  // 
+  //
   // https://github.com/remix-run/react-router/issues/7634
   // dispatch được đảm bảo ko thay đổi nhưng useNavigate lại bị -> rerender
   // nếu đưa vào trong arr dependency của useEffect sẽ ko được
   // Có pp walk-around tạo 1 RouterUtils dom ảo bọc chức năng lại
   // Hoặc tạo 1 Dom App-main , để fix ES-Lint, hoặc chấp nhận warning
-  
+
   useEffect(() => {
     dispatch({ type: 'ADD_HISTORY', history: history });
   }, [dispatch]);
@@ -90,6 +92,11 @@ function App() {
         <Route
           path="/demohocmodal"
           element={<HomeTemplate ele={DemoHOCModal} />}
+        />
+
+        <Route
+          path="/cyberbugs"
+          element={<CyberbugsTemplate ele={indexCyberBugs} />}
         />
 
         <Route path="/" element={<HomeTemplate ele={Home} />} />
