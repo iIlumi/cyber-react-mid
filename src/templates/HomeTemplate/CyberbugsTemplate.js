@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import MenuCyberbugs from '../../components/Cyberbugs/MenuCyberbugs';
+import ModalCyberBugs from '../../components/Cyberbugs/ModalCyberBugs/ModalCyberBugs';
 import SidebarCyberbugs from '../../components/Cyberbugs/SidebarCyberbugs';
 
 export const CyberbugsTemplate = (props) => {
@@ -14,6 +15,7 @@ export const CyberbugsTemplate = (props) => {
       <SidebarCyberbugs />
       <MenuCyberbugs />
       <Component {...propsRoute} />
+      <ModalCyberBugs />
     </div>
   );
 };

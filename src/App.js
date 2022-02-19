@@ -7,6 +7,7 @@ import Modal from './HOC/Modal/Modal';
 import About from './pages/About/About';
 import BaiTapToDoListSaga from './pages/BaiTapToDoListSaga/BaiTapToDoListSaga';
 import Contact from './pages/Contact/Contact';
+import CreateProject from './pages/CyberBugs/CreateProject/CreateProject';
 import indexCyberBugs from './pages/CyberBugs/indexCyberBugs';
 import LoginCyberBugs from './pages/CyberBugs/LoginCyberBugs/LoginCyberBugs';
 import DemoHOCModal from './pages/DemoHOCModal/DemoHOCModal';
@@ -97,6 +98,10 @@ function App() {
         <Route
           path="/cyberbugs"
           element={<CyberbugsTemplate ele={indexCyberBugs} />}
+        />
+        <Route
+          path="/createproject"
+          element={<CyberbugsTemplate ele={CreateProject} />}
         />
 
         <Route path="/" element={<HomeTemplate ele={Home} />} />

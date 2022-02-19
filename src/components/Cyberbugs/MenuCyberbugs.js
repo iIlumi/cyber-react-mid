@@ -22,7 +22,7 @@ export default function MenuCyberbugs() {
         </div>
         <div>
           <i className="fa fa-cog" />
-          <span>Project Settings</span>
+          <span>Create Project</span>
         </div>
       </div>
       <div className="feature">
