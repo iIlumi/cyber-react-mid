@@ -10,6 +10,8 @@ import createSagaMiddleware from '@redux-saga/core';
 import { rootSaga } from './sagas/rootSaga';
 import { HistoryReducer } from './reducers/HistoryReducer';
 import { UserLoginCyberBugsReducer } from './reducers/UserCyberBugsReducer';
+import { ProjectCategoryReducer } from './reducers/ProjectCategoryReducer';
+
 const middleWareSaga = createSagaMiddleware();
 
 const rootReducer = combineReducers({
@@ -19,6 +21,7 @@ const rootReducer = combineReducers({
   ModalReducer,
   HistoryReducer,
   UserLoginCyberBugsReducer,
+  ProjectCategoryReducer,
 });
 
 const store = createStore(

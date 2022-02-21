@@ -2,7 +2,8 @@ import { Editor } from '@tinymce/tinymce-react';
 import { withFormik } from 'formik';
 import React, { useEffect } from 'react';
 import * as Yup from 'yup';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { GET_ALL_PRJ_CATEGORY_SAGA } from '../../../redux/constants/Cyberbugs/Cyberbugs';
 
 function CreateProject(props) {
   //   function handleEditorChange(value, editor) {
@@ -10,20 +11,22 @@ function CreateProject(props) {
   //     console.log('value:', value);
   //   }
   const dispatch = useDispatch();
-
+  const arrProjectCategory = useSelector(
+    (state) => state.ProjectCategoryReducer.arrProjectCategory
+  );
 
   const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
     props;
 
   useEffect(() => {
     //Gọi api để lấy dữ liệu thẻ select
-    dispatch({ type: 'GET_ALL_PROJECT_CATEGORY_SAGA' });
+    dispatch({ type: GET_ALL_PRJ_CATEGORY_SAGA });
   }, [dispatch]);
 
   return (
     <div className="container m-5">
       <h3>CreateProject</h3>
-      <form className="container">
+      <form className="container" onSubmit={handleSubmit}>
         <div className="form-group">
           <p>Name</p>
           <input className="form-control" name="projectName" />
@@ -35,6 +38,7 @@ function CreateProject(props) {
             initialValue="hello editor"
             apiKey="hne9imm2uv75ei85awm7wtyi1tmp59rqr6x20g9omuq0fp4i"
             init={{
+              selector: 'textarea#myTextArea',
               height: 500,
               menubar: false,
               plugins: [
@@ -50,9 +54,13 @@ function CreateProject(props) {
         </div>
         <div className="form-group">
           <select name="categoryId" className="form-control">
-            <option>Software</option>
-            <option>Web</option>
-            <option>App</option>
+            {arrProjectCategory.map((item, index) => {
+              return (
+                <option value={item.id} key={index}>
+                  {item.projectCategoryName}
+                </option>
+              );
+            })}
           </select>
         </div>
         <button className="btn btn-outline-primary" type="submit">

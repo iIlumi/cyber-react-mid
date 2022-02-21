@@ -1,7 +1,8 @@
 import { all, fork } from 'redux-saga/effects';
 import * as ToDoListSaga from './ToDoListSaga';
 // Hoặc có thể viết kiểu destructering bình thường như dòng import trên
-import * as Cyberbugs from './Cyberbugs/UserCyberbugsSaga'
+import * as CybugsUser from './Cyberbugs/UserCyberbugsSaga';
+import * as CybugsPrjCategories from './Cyberbugs/ProjectCategorySaga';
 
 // các action bình thường vẫn chia để riêng ra,
 // Saga chỉ qản lý riêng các action saga (dispatch function)
@@ -24,7 +25,8 @@ export function* rootSaga() {
     ToDoListSaga.theoDoiActionToggleTask(),
 
     //Nghiệp vụ cyberbugs .... ,
-    Cyberbugs.theoDoiSignIn(),
+    CybugsUser.theoDoiSignIn(),
+    CybugsPrjCategories.theoDoigetAllProjectCategory(),
   ]);
 
   console.log('final root saga');
