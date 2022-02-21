@@ -20,10 +20,10 @@ export default function MenuCyberbugs() {
         <div>
           <i className="fa fa-credit-card mr-1" />
           <NavLink
-            className="text-dark"
-            activeStyle={{ color: 'blue' }}
+            className={({ isActive }) =>
+              isActive ? 'font-weight-bold text-primary active' : 'text-dark'
+            }
             to="/cyberbugs"
-            activeClassName="active font-weight-bold text-primary"
           >
             Cyber Board
           </NavLink>
@@ -31,10 +31,10 @@ export default function MenuCyberbugs() {
         <div>
           <i className="fa fa-cog mr-1" />
           <NavLink
-            className="text-dark"
-            activeStyle={{ color: 'blue' }}
+            className={({ isActive }) =>
+              isActive ? 'font-weight-bold text-primary active' : 'text-dark'
+            }
             to="/createproject"
-            activeClassName="active font-weight-bold  text-primary"
           >
             Create project
           </NavLink>
