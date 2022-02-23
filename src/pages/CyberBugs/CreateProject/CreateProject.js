@@ -13,7 +13,7 @@ function CreateProject(props) {
     setFieldValue('description', value);
   }
 
-  const dispatch = useDispatch();
+  const dispatchHook = useDispatch();
   const arrProjectCategory = useSelector(
     (state) => state.ProjectCategoryReducer.arrProjectCategory
   );
@@ -32,12 +32,12 @@ function CreateProject(props) {
 
   useEffect(() => {
     //Gọi api để lấy dữ liệu thẻ select
-    dispatch({ type: GET_ALL_PRJ_CATEGORY_SAGA });
+    dispatchHook({ type: GET_ALL_PRJ_CATEGORY_SAGA });
 
     // props.arrProjectCategory = arrProjectCategory;
     // https://www.freecodecamp.org/news/how-to-update-a-components-prop-in-react-js-oh-yes-it-s-possible-f9d26f1c4c6d/#:~:text=Whether%20you%20declare%20a%20component,are%20never%20to%20be%20updated.
     // Whether you declare a component as a function or a class, it must never modify its own props.
-  }, [dispatch]);
+  }, [dispatchHook]);
 
   console.log('createPrj re-render');
 
