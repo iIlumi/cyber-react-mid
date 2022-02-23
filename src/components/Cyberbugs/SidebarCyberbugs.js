@@ -5,7 +5,7 @@ export default function SidebarCyberbugs() {
     <div className="sideBar">
       <div className="sideBar-top">
         <div className="sideBar-icon">
-          <i className="fab fa-jira" />
+          <i className="fab fa-jira  text-white" />
         </div>
         <div
           className="sideBar-icon"
@@ -13,17 +13,17 @@ export default function SidebarCyberbugs() {
           data-target="#searchModal"
           style={{ cursor: 'pointer' }}
         >
-          <i className="fa fa-search" />
+          <i className="fa fa-search  text-white mr-2" />
           <span className="title">SEARCH ISSUES</span>
         </div>
         <div className="sideBar-icon">
-          <i className="fa fa-plus" />
+          <i className="fa fa-plus  text-white mr-2" />
           <span className="title">CREATE ISSUES</span>
         </div>
       </div>
       <div className="sideBar-bottom">
         <div className="sideBar-icon">
-          <i className="fa fa-question-circle" />
+          <i className="fa fa-question-circle  text-white mr-2" />
           <span className="title">ABOUT</span>
         </div>
       </div>
