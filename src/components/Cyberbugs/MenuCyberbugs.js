@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 export default function MenuCyberbugs() {
+  // console.log('MenuCyberbugs render');
   return (
     <div className="menu">
       <div className="account">
@@ -26,6 +27,17 @@ export default function MenuCyberbugs() {
             to="/cyberbugs"
           >
             Cyber Board
+          </NavLink>
+        </div>
+        <div>
+          <i className="fa fa-credit-card mr-1" />
+          <NavLink
+            className={({ isActive }) =>
+              isActive ? 'font-weight-bold text-primary active' : 'text-dark'
+            }
+            to="/projectmanagement"
+          >
+            Project management
           </NavLink>
         </div>
         <div>

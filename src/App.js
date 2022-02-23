@@ -10,6 +10,7 @@ import Contact from './pages/Contact/Contact';
 import CreateProject from './pages/CyberBugs/CreateProject/CreateProject';
 import indexCyberBugs from './pages/CyberBugs/indexCyberBugs';
 import LoginCyberBugs from './pages/CyberBugs/LoginCyberBugs/LoginCyberBugs';
+import ProjectManagement from './pages/CyberBugs/ProjectManagement/ProjectManagement';
 import DemoHOCModal from './pages/DemoHOCModal/DemoHOCModal';
 import Detail from './pages/Detail/Detail';
 import Home from './pages/Home/Home';
@@ -102,6 +103,10 @@ function App() {
         <Route
           path="/createproject"
           element={<CyberbugsTemplate ele={CreateProject} />}
+        />
+        <Route
+          path="/projectmanagement"
+          element={<CyberbugsTemplate ele={ProjectManagement} />}
         />
 
         <Route path="/" element={<HomeTemplate ele={Home} />} />

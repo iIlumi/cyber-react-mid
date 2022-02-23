@@ -6,7 +6,7 @@ import SidebarCyberbugs from '../../components/Cyberbugs/SidebarCyberbugs';
 
 export const CyberbugsTemplate = (props) => {
   const { ele: Component, ...propsRoute } = props;
-
+  // console.log('CyberbugsTemplate render');
   return (
     <div className="jira">
       <Helmet>
@@ -17,5 +17,5 @@ export const CyberbugsTemplate = (props) => {
       <Component {...propsRoute} />
       <ModalCyberBugs />
     </div>
-  );
+  );  
 };
