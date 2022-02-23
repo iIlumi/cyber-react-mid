@@ -30,6 +30,8 @@ function* signInSaga(action) {
 
     // router v6 thực chất là navigate() trực tiếp chứ ko history.push() như v5
     // https://redux-saga.js.org/docs/api/#selectselector-args
+    // https://stackoverflow.com/questions/63471931/using-history-with-react-router-dom-v6
+    // https://github.com/salvoravida/redux-first-history
     let history = yield select((state) => state.HistoryReducer.history);
     // history.push('/home');
     history('/home');

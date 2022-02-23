@@ -1,8 +1,10 @@
 import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
-import { Button, Space, Table } from 'antd';
-import React, { useState } from 'react';
-import prjDataDemo from './PrjDataDemo.json';
-import parse from 'html-react-parser';
+import { Button, Tag, Space, Table } from 'antd';
+import React, { useState, useEffect } from 'react';
+// import prjDataDemo from './PrjDataDemo.json';
+// import parse from 'html-react-parser';
+import { useSelector, useDispatch } from 'react-redux';
+
 // import ReactHtmlParser from 'react-html-parser';
 // not support React 17
 
@@ -13,6 +15,17 @@ export default function ProjectManagement(props) {
     filteredInfo: null,
     sortedInfo: null,
   });
+
+  //Lấy dữ liệu từ reducer về component
+  const projectList = useSelector(
+    (state) => state.ProjectCyberBugsReducer.projectList
+  );
+  //Sử dụng useDispatch để gọi action
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({ type: 'GET_LIST_PROJECT_SAGA' });
+  }, [dispatch]);
 
   const handleChange = (pagination, filters, sorter) => {
     console.log('Various parameters', pagination, filters, sorter);
@@ -56,14 +69,30 @@ export default function ProjectManagement(props) {
       dataIndex: 'projectName',
       key: 'projectName',
     },
+    // {
+    //   title: 'description',
+    //   dataIndex: 'description',
+    //   key: 'description',
+    //   // https://ant.design/components/table/#Column
+    //   render: (text, record, index) => {
+    //     let contentJSX = parse(text);
+    //     return <div>{contentJSX}</div>;
+    //   },
+    // },
     {
-      title: 'description',
-      dataIndex: 'description',
-      key: 'description',
-      // https://ant.design/components/table/#Column
+      title: 'category',
+      dataIndex: 'categoryName',
+      key: 'categoryName',
+    },
+    {
+      title: 'creator',
+      // dataIndex: 'creator',
+      key: 'creator',
       render: (text, record, index) => {
-        let contentJSX = parse(text);
-        return <div>{contentJSX}</div>;
+        // console.log('index:', index)
+        // console.log('record:', record)
+        // console.log('text:', text)
+        return <Tag color="green">{record.creator?.name}</Tag>;
       },
     },
     {
@@ -95,7 +124,7 @@ export default function ProjectManagement(props) {
       <Table
         columns={columns}
         rowKey={'id'}
-        dataSource={prjDataDemo}
+        dataSource={projectList}
         onChange={handleChange}
       />
     </div>

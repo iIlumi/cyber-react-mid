@@ -3,7 +3,7 @@ import * as ToDoListSaga from './ToDoListSaga';
 // Hoặc có thể viết kiểu destructering bình thường như dòng import trên
 import * as CybugsUser from './Cyberbugs/UserCyberbugsSaga';
 import * as CybugsPrjCategories from './Cyberbugs/ProjectCategorySaga';
-import * as ProjectSaga from './Cyberbugs/ProjectSaga'
+import * as ProjectSaga from './Cyberbugs/ProjectSaga';
 
 // các action bình thường vẫn chia để riêng ra,
 // Saga chỉ qản lý riêng các action saga (dispatch function)
@@ -29,6 +29,7 @@ export function* rootSaga() {
     CybugsUser.theoDoiSignIn(),
     CybugsPrjCategories.theoDoigetAllProjectCategory(),
     ProjectSaga.theoDoiCreateProjectSaga(),
+    ProjectSaga.theoDoiGetListProjectSaga(),
   ]);
 
   console.log('final root saga');

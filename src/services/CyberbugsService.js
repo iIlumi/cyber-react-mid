@@ -38,4 +38,12 @@ export const cyberbugsService = {
       //JWT token gen lib
     });
   },
+
+  getListProject: () => {
+    return Axios({
+      url: `${DOMAIN_CYBERBUG}/Project/getAllProject`,
+      method: 'GET',
+      headers: { Authorization: 'Bearer ' + localStorage.getItem(TOKEN) }, //token yêu cầu từ backend chứng minh user đã đăng nhập rồi
+    });
+  },
 };

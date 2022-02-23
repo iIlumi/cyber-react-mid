@@ -20,11 +20,11 @@ function CreateProject(props) {
 
   // handleChange dc formik định nghĩa sẵn, ko custom được
   const {
-    values,
-    touched,
-    errors,
+    // values,
+    // touched,
+    // errors,
     handleChange,
-    handleBlur,
+    // handleBlur,
     handleSubmit,
     // setValue, -> chỉ set toàn bộ obj, ở đây ta chỉ set cho description
     setFieldValue,
