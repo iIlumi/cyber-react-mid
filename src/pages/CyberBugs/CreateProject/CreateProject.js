@@ -6,15 +6,17 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { GET_ALL_PRJ_CATEGORY_SAGA } from '../../../redux/constants/Cyberbugs/Cyberbugs';
 
 function CreateProject(props) {
-  //   function handleEditorChange(value, editor) {
-  //     console.log('editor:', editor)
-  //     console.log('value:', value);
-  //   }
+  function handleEditorChange(value, editor) {
+    // console.log('editor:', editor);
+    console.log('value:', value);
+  }
+
   const dispatch = useDispatch();
   const arrProjectCategory = useSelector(
     (state) => state.ProjectCategoryReducer.arrProjectCategory
   );
 
+  // handleChange dc formik định nghĩa sẵn, ko custom được
   const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
     props;
 
@@ -23,10 +25,16 @@ function CreateProject(props) {
     dispatch({ type: GET_ALL_PRJ_CATEGORY_SAGA });
   }, [dispatch]);
 
+  console.log('createPrj re-render');
+
   return (
     <div className="container m-5">
       <h3>CreateProject</h3>
-      <form className="container" onSubmit={handleSubmit}>
+      <form
+        className="container"
+        onSubmit={handleSubmit}
+        onChange={handleChange}
+      >
         <div className="form-group">
           <p>Name</p>
           <input className="form-control" name="projectName" />
@@ -49,11 +57,15 @@ function CreateProject(props) {
               toolbar:
                 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify |  bullist numlist outdent indent | removeformat | help',
             }}
-            // onEditorChange={handleEditorChange}
+            onEditorChange={handleEditorChange}
           />
         </div>
         <div className="form-group">
-          <select name="categoryId" className="form-control">
+          <select
+            name="categoryId"
+            className="form-control"
+            onChange={handleChange}
+          >
             {arrProjectCategory.map((item, index) => {
               return (
                 <option value={item.id} key={index}>
@@ -83,10 +95,28 @@ function CreateProject(props) {
  */
 
 const createProjectForm = withFormik({
-  mapPropsToValues: () => ({}),
+  mapPropsToValues: (props) => {
+    console.log('mapPropsToValues', props);
+    return {
+      projectName: '',
+      description: '',
+    };
+  },
+
   validationSchema: Yup.object().shape({}),
-  handleSubmit: (values, { props, setSubmitting }) => {},
+
+  handleSubmit: (values, { props, setSubmitting }) => {
+    console.log('handleSubmit props', props);
+  },
+
   displayName: 'CreateProjectFormik',
 })(CreateProject);
 
 export default connect()(createProjectForm);
+
+/**
+ * ở đây mỗi khi gõ trong Editor thì form ko re-render
+ * Tuy nhiên gọ title hoặc chọn option thì gây re-render toàn bộ form
+ * Lại connect lên redux lấy state mới về
+ * -> useEffect ở đây chỉ chạy khi mount
+ */
