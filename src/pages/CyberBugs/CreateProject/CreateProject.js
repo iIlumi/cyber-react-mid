@@ -7,8 +7,10 @@ import { GET_ALL_PRJ_CATEGORY_SAGA } from '../../../redux/constants/Cyberbugs/Cy
 
 function CreateProject(props) {
   function handleEditorChange(value, editor) {
+    console.log('handleEditorChange props:', props);
     // console.log('editor:', editor);
-    console.log('value:', value);
+    console.log('handleEditorChange value:', value);
+    setFieldValue('description', value);
   }
 
   const dispatch = useDispatch();
@@ -17,12 +19,24 @@ function CreateProject(props) {
   );
 
   // handleChange dc formik định nghĩa sẵn, ko custom được
-  const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
-    props;
+  const {
+    values,
+    touched,
+    errors,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    // setValue, -> chỉ set toàn bộ obj, ở đây ta chỉ set cho description
+    setFieldValue,
+  } = props;
 
   useEffect(() => {
     //Gọi api để lấy dữ liệu thẻ select
     dispatch({ type: GET_ALL_PRJ_CATEGORY_SAGA });
+
+    // props.arrProjectCategory = arrProjectCategory;
+    // https://www.freecodecamp.org/news/how-to-update-a-components-prop-in-react-js-oh-yes-it-s-possible-f9d26f1c4c6d/#:~:text=Whether%20you%20declare%20a%20component,are%20never%20to%20be%20updated.
+    // Whether you declare a component as a function or a class, it must never modify its own props.
   }, [dispatch]);
 
   console.log('createPrj re-render');
@@ -95,24 +109,38 @@ function CreateProject(props) {
  */
 
 const createProjectForm = withFormik({
+  enableReinitialize: true,
   mapPropsToValues: (props) => {
     console.log('mapPropsToValues', props);
     return {
       projectName: '',
       description: '',
+      categoryId: props.arrProjectCategory[0]?.id,
     };
   },
 
   validationSchema: Yup.object().shape({}),
 
   handleSubmit: (values, { props, setSubmitting }) => {
+    console.log('handleSubmit values:', values);
     console.log('handleSubmit props', props);
+
+    props.dispatch({
+      type: 'CREATE_PROJECT_SAGA',
+      newProject: values,
+    });
   },
 
   displayName: 'CreateProjectFormik',
 })(CreateProject);
 
-export default connect()(createProjectForm);
+// Vì ko tự modified props bên trong component được nên phải connect dạng cũ
+// Tuy nhiên khi này useSelector bên trong lại thừa
+const mapStateToProps = (state) => ({
+  arrProjectCategory: state.ProjectCategoryReducer.arrProjectCategory,
+});
+
+export default connect(mapStateToProps)(createProjectForm);
 
 /**
  * ở đây mỗi khi gõ trong Editor thì form ko re-render
