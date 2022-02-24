@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 // import prjDataDemo from './PrjDataDemo.json';
 // import parse from 'html-react-parser';
 import { useSelector, useDispatch } from 'react-redux';
+import FormEditProject from '../../../components/Forms/FormEditProject';
 
 // import ReactHtmlParser from 'react-html-parser';
 // not support React 17
@@ -130,7 +131,18 @@ export default function ProjectManagement(props) {
       render: (text, record, index) => {
         return (
           <div>
-            <button className="btn mr-2 btn-primary">
+            <button
+              className="btn mr-2 btn-primary"
+              onClick={() => {
+                const action = {
+                  type: 'OPEN_FORM_EDIT_PROJECT',
+                  Component: <FormEditProject />,
+                };
+
+                //dispatch lên reducer nội dung drawer
+                dispatch(action);
+              }}
+            >
               <FormOutlined style={{ fontSize: 17 }} />
             </button>
             <button className="btn btn-danger">

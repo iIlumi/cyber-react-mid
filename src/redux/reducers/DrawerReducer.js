@@ -19,6 +19,8 @@ export const DrawerReducer = (state = initialState, action) => {
     case 'CLOSE_DRAWER':
       return { ...state, visible: false };
     case 'OPEN_FORM_EDIT_PROJECT': {
+      // Ghi cách này sẽ mod từng thuộc tính rồi tạo copy sau
+      // ko cần tạo 1 obj trung gian
       state.visible = true;
       state.ComponentContentDrawer = action.Component;
 
