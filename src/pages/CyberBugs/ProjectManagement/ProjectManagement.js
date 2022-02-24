@@ -55,9 +55,9 @@ export default function ProjectManagement(props) {
     });
   };
 
-  let { sortedInfo, filteredInfo } = state;
-  sortedInfo = sortedInfo || {};
-  filteredInfo = filteredInfo || {};
+  // let { sortedInfo, filteredInfo } = state;
+  // sortedInfo = sortedInfo || {};
+  // filteredInfo = filteredInfo || {};
   const columns = [
     {
       title: 'id',

@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import MenuCyberbugs from '../../components/Cyberbugs/MenuCyberbugs';
 import ModalCyberBugs from '../../components/Cyberbugs/ModalCyberBugs/ModalCyberBugs';
 import SidebarCyberbugs from '../../components/Cyberbugs/SidebarCyberbugs';
+import DrawerCyberBugs from '../../HOC/CyberbugsHOC/DrawerCyberBugs';
 
 export const CyberbugsTemplate = (props) => {
   const { ele: Component, ...propsRoute } = props;
@@ -16,6 +17,7 @@ export const CyberbugsTemplate = (props) => {
       <MenuCyberbugs />
       <Component {...propsRoute} />
       <ModalCyberBugs />
+      <DrawerCyberBugs />
     </div>
-  );  
+  );
 };

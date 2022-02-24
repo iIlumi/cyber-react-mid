@@ -4,7 +4,8 @@ import {
 import { Layout, Menu } from 'antd';
 import React, { useState } from 'react';
 
-const { Header, Sider, Content } = Layout;
+// const { Header, Sider, Content } = Layout;
+const { Sider } = Layout;
 
 export default function SidebarCyberbugs() {
   const [state, setState] = useState({
