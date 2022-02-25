@@ -1,5 +1,5 @@
 import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
-import { Button, Tag, Space, Table } from 'antd';
+import { Button, Tag, Space, Table, Popconfirm } from 'antd';
 import React, { useState, useEffect } from 'react';
 // import prjDataDemo from './PrjDataDemo.json';
 // import parse from 'html-react-parser';
@@ -151,9 +151,20 @@ export default function ProjectManagement(props) {
             >
               <FormOutlined style={{ fontSize: 17 }} />
             </button>
-            <button className="btn btn-danger">
-              <DeleteOutlined style={{ fontSize: 17 }} />
-            </button>
+            {/* https://ant.design/components/popconfirm/#components-popconfirm-demo-basic */}
+            <Popconfirm
+              title="Are you sure to delete this project?"
+              onConfirm={() => {
+                dispatch({ type: 'DELETE_PROJECT_SAGA', idProject: record.id });
+              }}
+              okText="Yes"
+              cancelText="No"
+            >
+              <button className="btn btn-danger">
+                <DeleteOutlined style={{ fontSize: 17 }} />
+              </button>
+            </Popconfirm>
+            ,
           </div>
         );
       },
