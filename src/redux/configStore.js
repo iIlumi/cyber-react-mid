@@ -13,6 +13,7 @@ import { UserLoginCyberBugsReducer } from './reducers/UserCyberBugsReducer';
 import { ProjectCategoryReducer } from './reducers/ProjectCategoryReducer';
 import { ProjectCyberBugsReducer } from './reducers/ProjectCyberBugsReducer';
 import { DrawerReducer } from './reducers/DrawerReducer';
+import { ProjectReducer } from './reducers/ProjectReducer';
 
 const middleWareSaga = createSagaMiddleware();
 
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   ProjectCategoryReducer,
   ProjectCyberBugsReducer,
   DrawerReducer,
+  ProjectReducer,
 });
 
 const store = createStore(
