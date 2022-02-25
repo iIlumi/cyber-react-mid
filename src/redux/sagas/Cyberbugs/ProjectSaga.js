@@ -2,6 +2,7 @@ import { call, delay, put, select, takeLatest } from 'redux-saga/effects';
 import { cyberbugsService } from '../../../services/CyberbugsService';
 import { projectService } from '../../../services/ProjectService';
 import { STATUS_CODE } from '../../../util/constants/settingSystem';
+import { notifiFunction } from '../../../util/Notification/notificationCyberbugs';
 import { DISPLAY_LOADING, HIDE_LOADING } from '../../constants/LoadingConst';
 
 function* createProjectSaga(action) {
@@ -132,8 +133,10 @@ function* deleteProjectSaga(action) {
     //Gọi api thành công thì dispatch lên reducer thông qua put
     if (status === STATUS_CODE.SUCCESS) {
       console.log(data);
+      notifiFunction('success', 'Delete project successfully !');
       // history.push('/projectmanagement');
     } else {
+      notifiFunction('error', 'Delete project fail !');
     }
     // yield put({
     //     type:'GET_LIST_PROJECT_SAGA'
@@ -143,6 +146,7 @@ function* deleteProjectSaga(action) {
       type: 'CLOSE_DRAWER',
     });
   } catch (err) {
+    notifiFunction('error', 'Delete project fail !');
     console.log(err);
   }
 
