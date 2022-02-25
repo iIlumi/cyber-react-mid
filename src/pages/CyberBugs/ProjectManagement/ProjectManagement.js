@@ -134,13 +134,19 @@ export default function ProjectManagement(props) {
             <button
               className="btn mr-2 btn-primary"
               onClick={() => {
+                //dispatch lên reducer nội dung drawer
                 const action = {
                   type: 'OPEN_FORM_EDIT_PROJECT',
                   Component: <FormEditProject />,
                 };
-
-                //dispatch lên reducer nội dung drawer
                 dispatch(action);
+
+                //dispatch dữ liệu dòng hiện tai lên reducer
+                const actionEditProject = {
+                  type: 'EDIT_PROJECT',
+                  projectEditModel: record,
+                };
+                dispatch(actionEditProject);
               }}
             >
               <FormOutlined style={{ fontSize: 17 }} />

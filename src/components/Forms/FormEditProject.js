@@ -1,7 +1,7 @@
 import { Editor } from '@tinymce/tinymce-react';
 // import { useDispatch } from 'react-redux';
 import { withFormik } from 'formik';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import * as Yup from 'yup';
 import { GET_ALL_PRJ_CATEGORY_SAGA } from '../../redux/constants/Cyberbugs/Cyberbugs';
@@ -27,6 +27,8 @@ function FormEditProject(props) {
   } = props;
   console.log('props:', props);
 
+  // https://www.tiny.cloud/docs/integrations/react/#exampleusingasynchronousinitialvalue
+  const [initialValue, setInitialValue] = useState(undefined);
   //componentdidmount
   useEffect(() => {
     //Gọi api load project category
@@ -37,6 +39,7 @@ function FormEditProject(props) {
       submitFunction: handleSubmit,
     });
     dispatch({ type: GET_ALL_PRJ_CATEGORY_SAGA });
+    setInitialValue(values.description)
   }, [dispatch]);
 
   const handleEditorChange = (content, editor) => {
@@ -97,7 +100,8 @@ function FormEditProject(props) {
             <Editor
               name="description_drawer"
               apiKey="hne9imm2uv75ei85awm7wtyi1tmp59rqr6x20g9omuq0fp4i"
-              initialValue={values.description}
+              initialValue={initialValue}
+              value={values.description}
               init={{
                 selector: 'textarea#myTextArea',
 
@@ -134,7 +138,17 @@ const EditProjectForm = withFormik({
   },
   validationSchema: Yup.object().shape({}),
   handleSubmit: (values, { props, setSubmitting }) => {
-    console.log('values', values);
+    // console.log('values', values);
+    //Khi người dùng bấm submit => đưa dữ liệu về backedn thông qua api
+    // const action = {
+    //     type:'UPDATE_PROJECT_SAGA',
+    //     prjectUpdate:values
+    // }
+    //Gọi saga
+    props.dispatch({
+      type: 'UPDATE_PROJECT_SAGA',
+      prjUpdate: values,
+    });
   },
   displayName: 'EditProjectForm',
 })(FormEditProject);

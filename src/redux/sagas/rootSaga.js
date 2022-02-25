@@ -30,6 +30,7 @@ export function* rootSaga() {
     CybugsPrjCategories.theoDoigetAllProjectCategory(),
     ProjectSaga.theoDoiCreateProjectSaga(),
     ProjectSaga.theoDoiGetListProjectSaga(),
+    ProjectSaga.theoDoiUpdateProjectSaga(),
   ]);
 
   console.log('final root saga');
