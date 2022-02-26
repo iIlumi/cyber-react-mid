@@ -1,5 +1,14 @@
 import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
-import { Button, Tag, Space, Table, Popconfirm } from 'antd';
+import {
+  Button,
+  Tag,
+  Space,
+  Table,
+  Popconfirm,
+  Avatar,
+  Popover,
+  AutoComplete,
+} from 'antd';
 import React, { useState, useEffect } from 'react';
 // import prjDataDemo from './PrjDataDemo.json';
 // import parse from 'html-react-parser';
@@ -122,6 +131,36 @@ export default function ProjectManagement(props) {
           return -1;
         }
         return 1;
+      },
+    },
+    {
+      title: 'members',
+      key: 'members',
+      render: (text, record, index) => {
+        // https://ant.design/components/avatar/#components-avatar-demo-type
+        // https://ant.design/components/popover/#components-popover-demo-placement
+        // https://ant.design/components/auto-complete/#components-auto-complete-demo-basic
+        // https://ant.design/components/auto-complete/#API
+        return (
+          <div>
+            {record.members?.slice(0, 3).map((member, index) => {
+              return <Avatar key={index} src={member.avatar} />;
+            })}
+
+            {record.members?.length > 3 ? <Avatar>...</Avatar> : ''}
+
+            <Popover
+              placement="rightTop"
+              title={'Add user'}
+              content={() => {
+                return <AutoComplete style={{ width: '100%' }} />;
+              }}
+              trigger="click"
+            >
+              <Button style={{ borderRadius: '50%' }}>+</Button>
+            </Popover>
+          </div>
+        );
       },
     },
     {
