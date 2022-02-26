@@ -26,6 +26,8 @@ export default function ProjectManagement(props) {
     sortedInfo: null,
   });
 
+  const [autoCompleteValue, setAutoCompleteValue] = useState('');
+
   //Lấy dữ liệu từ reducer về component
   const projectList = useSelector(
     (state) => state.ProjectCyberBugsReducer.projectList
@@ -176,9 +178,30 @@ export default function ProjectManagement(props) {
                         value: user.userId.toString(),
                       };
                     })}
-                    onSelect={(value, option) => {
-                      console.log('userId', value);
+                    // Tên của user chỉ là hiển thị,
+                    // thực chất là ta phải dispatch value lên
+                    onSelect={(valueSelect, option) => {
+                      setAutoCompleteValue(option.label);
                       console.log('option', option);
+                      console.log('valueSelect:', valueSelect)
+                      console.log('record:', record)
+                      // Chưa ỏn lắm
+                      // Nếu select như vậy thì sẽ dispatch trực tiếp lên API luôn khi click chọn
+                      // Hơi liên quan về UX
+                      dispatch({
+                        type: 'ADD_USER_PROJECT_API',
+                        userProject: {
+                          projectId: record.id,
+                          userId: valueSelect,
+                        },
+                      });
+                    }}
+                    // Text hiển thị vào vẫn là label nhưng data ngầm bên dưới là value
+                    // các API này do antd cung cấp
+                    value={autoCompleteValue}
+                    // Khi này phải bind override onChange thêm 1 lần nữa
+                    onChange={(text) => {
+                      setAutoCompleteValue(text);
                     }}
                   />
                 );

@@ -60,9 +60,7 @@ function* getUserSaga(action) {
 
   //Gọi api
   try {
-    const { data, status } = yield call(() =>
-      userService.getUser(action.keyWord)
-    );
+    const { data } = yield call(() => userService.getUser(action.keyWord));
 
     yield put({
       type: 'GET_USER_SEARCH',
@@ -75,4 +73,24 @@ function* getUserSaga(action) {
 
 export function* theoDoiGetUser() {
   yield takeLatest('GET_USER_API', getUserSaga);
+}
+
+//Quản lý các action saga
+function* addUserProjectSaga(action) {
+  try {
+    yield call(() => userService.assignUserProject(action.userProject));
+
+    // Lúc này ta chỉ mới thay đổi trên back-end
+    // Phải gọi saga để FE sync cùng
+    // Re-render - load lại prj trên redux
+    yield put({
+      type: 'GET_LIST_PROJECT_SAGA',
+    });
+  } catch (err) {
+    console.log(err.response.data);
+  }
+}
+
+export function* theoDoiAddUserProject() {
+  yield takeLatest('ADD_USER_PROJECT_API', addUserProjectSaga);
 }
