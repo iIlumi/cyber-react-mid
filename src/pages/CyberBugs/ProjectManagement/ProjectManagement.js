@@ -30,6 +30,11 @@ export default function ProjectManagement(props) {
   const projectList = useSelector(
     (state) => state.ProjectCyberBugsReducer.projectList
   );
+
+  const { userSearch } = useSelector(
+    (state) => state.UserLoginCyberBugsReducer
+  );
+
   //Sử dụng useDispatch để gọi action
   const dispatch = useDispatch();
 
@@ -153,7 +158,30 @@ export default function ProjectManagement(props) {
               placement="rightTop"
               title={'Add user'}
               content={() => {
-                return <AutoComplete style={{ width: '100%' }} />;
+                return (
+                  <AutoComplete
+                    style={{ width: '100%' }}
+                    onSearch={(value) => {
+                      // console.log('onSearch value:', value)
+                      // code hiện tại sẽ gọi API liên tục mỗi khi gõ vào
+                      // FiX sau
+                      dispatch({
+                        type: 'GET_USER_API',
+                        keyWord: value,
+                      });
+                    }}
+                    options={userSearch?.map((user, index) => {
+                      return {
+                        label: user.name,
+                        value: user.userId.toString(),
+                      };
+                    })}
+                    onSelect={(value, option) => {
+                      console.log('userId', value);
+                      console.log('option', option);
+                    }}
+                  />
+                );
               }}
               trigger="click"
             >

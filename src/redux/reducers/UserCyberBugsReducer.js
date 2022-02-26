@@ -15,12 +15,19 @@ if (localStorage.getItem(USER_LOGIN)) {
 
 const stateDefault = {
   userLoginInfo: userLoginInfo,
+  userSearch: [],
 };
 
 export const UserLoginCyberBugsReducer = (state = stateDefault, action) => {
   switch (action.type) {
     case LOGIN_SUCCESS: {
       state.userLoginInfo = action.userLoginInfo;
+      return { ...state };
+    }
+
+    case 'GET_USER_SEARCH': {
+      state.userSearch = action.lstUserSearch;
+      console.log('stateUser', state);
       return { ...state };
     }
 
