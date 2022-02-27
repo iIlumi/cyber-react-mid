@@ -57,6 +57,7 @@ export function* theoDoiSignIn() {
 //Quản lý các action saga
 function* getUserSaga(action) {
   //action.keyWord
+  console.log('getUserSaga(action) :', action);
 
   //Gọi api
   try {

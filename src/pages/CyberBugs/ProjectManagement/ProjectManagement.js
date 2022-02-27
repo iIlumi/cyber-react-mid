@@ -13,7 +13,7 @@ import {
   Popover,
   AutoComplete,
 } from 'antd';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 // import prjDataDemo from './PrjDataDemo.json';
 // import parse from 'html-react-parser';
 import { useSelector, useDispatch } from 'react-redux';
@@ -31,6 +31,8 @@ export default function ProjectManagement(props) {
   });
 
   const [autoCompleteValue, setAutoCompleteValue] = useState('');
+
+  const searchRef = useRef(null);
 
   //Lấy dữ liệu từ reducer về component
   const projectList = useSelector(
@@ -228,11 +230,19 @@ export default function ProjectManagement(props) {
                     onSearch={(value) => {
                       // console.log('onSearch value:', value)
                       // code hiện tại sẽ gọi API liên tục mỗi khi gõ vào
-                      // FiX sau
-                      dispatch({
-                        type: 'GET_USER_API',
-                        keyWord: value,
-                      });
+                      // FiX bằng debounce search
+                      // https://viblo.asia/p/su-dung-debounce-trong-reactjs-voi-hooks-3Q75wQmGZWb
+                      // https://stackoverflow.com/questions/23123138/perform-debounce-in-react-js
+                      // Dùng useRef hoặc useCallback
+                      if (searchRef.current) {
+                        clearTimeout(searchRef.current);
+                      }
+                      searchRef.current = setTimeout(() => {
+                        dispatch({
+                          type: 'GET_USER_API',
+                          keyWord: value,
+                        });
+                      }, 300);
                     }}
                     options={userSearch?.map((user, index) => {
                       return {
