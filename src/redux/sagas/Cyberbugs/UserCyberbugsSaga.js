@@ -94,3 +94,20 @@ function* addUserProjectSaga(action) {
 export function* theoDoiAddUserProject() {
   yield takeLatest('ADD_USER_PROJECT_API', addUserProjectSaga);
 }
+
+//Quản lý các action saga
+function* removeUserProjectSaga(action) {
+  try {
+    yield call(() => userService.deleteUserFromProject(action.userProject));
+
+    yield put({
+      type: 'GET_LIST_PROJECT_SAGA',
+    });
+  } catch (err) {
+    console.log(err.response.data);
+  }
+}
+
+export function* theoDoiRemoveUserProject() {
+  yield takeLatest('REMOVE_USER_PROJECT_API', removeUserProjectSaga);
+}

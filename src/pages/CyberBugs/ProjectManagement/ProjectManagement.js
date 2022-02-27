@@ -1,4 +1,8 @@
-import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
+import {
+  DeleteOutlined,
+  FormOutlined,
+  // CloseSquareOutlined,
+} from '@ant-design/icons';
 import {
   Button,
   Tag,
@@ -151,7 +155,65 @@ export default function ProjectManagement(props) {
         return (
           <div>
             {record.members?.slice(0, 3).map((member, index) => {
-              return <Avatar key={index} src={member.avatar} />;
+              return (
+                <Popover
+                  key={index}
+                  placement="top"
+                  title="members"
+                  content={() => {
+                    return (
+                      <table className="table">
+                        <thead>
+                          <tr>
+                            <th>Id</th>
+                            <th>avatar</th>
+                            <th>name</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {record.members?.map((item, index) => {
+                            return (
+                              <tr key={index}>
+                                <td>{item.userId}</td>
+                                <td>
+                                  <img
+                                    src={item.avatar}
+                                    width="30"
+                                    height="30"
+                                    style={{ borderRadius: '15px' }}
+                                    alt={item.name + 'img'}
+                                  />
+                                </td>
+                                <td>{item.name}</td>
+                                <td>
+                                  <button
+                                    onClick={() => {
+                                      dispatch({
+                                        type: 'REMOVE_USER_PROJECT_API',
+                                        userProject: {
+                                          userId: item.userId,
+                                          projectId: record.id,
+                                        },
+                                      });
+                                    }}
+                                    className="btn btn-danger"
+                                    style={{ borderRadius: '50%' }}
+                                  >
+                                    X
+                                  </button>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    );
+                  }}
+                >
+                  <Avatar key={index} src={member.avatar} />
+                </Popover>
+              );
             })}
 
             {record.members?.length > 3 ? <Avatar>...</Avatar> : ''}
@@ -183,8 +245,8 @@ export default function ProjectManagement(props) {
                     onSelect={(valueSelect, option) => {
                       setAutoCompleteValue(option.label);
                       console.log('option', option);
-                      console.log('valueSelect:', valueSelect)
-                      console.log('record:', record)
+                      console.log('valueSelect:', valueSelect);
+                      console.log('record:', record);
                       // Chưa ỏn lắm
                       // Nếu select như vậy thì sẽ dispatch trực tiếp lên API luôn khi click chọn
                       // Hơi liên quan về UX
