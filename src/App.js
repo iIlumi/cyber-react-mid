@@ -8,7 +8,7 @@ import About from './pages/About/About';
 import BaiTapToDoListSaga from './pages/BaiTapToDoListSaga/BaiTapToDoListSaga';
 import Contact from './pages/Contact/Contact';
 import CreateProject from './pages/CyberBugs/CreateProject/CreateProject';
-import indexCyberBugs from './pages/CyberBugs/indexCyberBugs';
+import IndexCyberBugs from './pages/CyberBugs/IndexCyberBugs';
 import LoginCyberBugs from './pages/CyberBugs/LoginCyberBugs/LoginCyberBugs';
 import ProjectManagement from './pages/CyberBugs/ProjectManagement/ProjectManagement';
 import DemoHOCModal from './pages/DemoHOCModal/DemoHOCModal';
@@ -98,7 +98,7 @@ function App() {
 
         <Route
           path="/cyberbugs"
-          element={<CyberbugsTemplate ele={indexCyberBugs} />}
+          element={<CyberbugsTemplate ele={IndexCyberBugs} />}
         />
         <Route
           path="/createproject"
@@ -107,6 +107,10 @@ function App() {
         <Route
           path="/projectmanagement"
           element={<CyberbugsTemplate ele={ProjectManagement} />}
+        />
+        <Route
+          path="/projectdetail/:projectId"
+          element={<CyberbugsTemplate ele={IndexCyberBugs} />}
         />
 
         <Route path="/" element={<HomeTemplate ele={Home} />} />

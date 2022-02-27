@@ -36,6 +36,7 @@ export function* rootSaga() {
     ProjectSaga.theoDoiGetListProjectSaga(),
     ProjectSaga.theoDoiUpdateProjectSaga(),
     ProjectSaga.theoDoiDeleteProject(),
+    ProjectSaga.theoDoiGetProjectDetail(),
   ]);
 
   console.log('final root saga');
