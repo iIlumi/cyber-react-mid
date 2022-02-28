@@ -1,8 +1,20 @@
 import React from 'react';
 import { Editor } from '@tinymce/tinymce-react';
+import { Select } from 'antd';
+
+const { Option } = Select;
+const children = [];
+for (let i = 20; i < 36; i++) {
+  children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
+}
 
 export default function FormCreateTask() {
   const handleEditorChange = (content, editor) => {};
+
+  function handleSelectChange(value) {
+    console.log(`Selected: ${value}`);
+  }
+
   return (
     <div className="container">
       <div className="form-group">
@@ -27,6 +39,29 @@ export default function FormCreateTask() {
               <option>New Task</option>
               <option>Bugs</option>
             </select>
+          </div>
+        </div>
+      </div>
+      {/* https://ant.design/components/select/#components-select-demo-size */}
+      <div className="form-group">
+        <div className="row">
+          <div className="col-6">
+            <p>Assignees</p>
+            <Select
+              mode="multiple"
+              size="default"
+              options={[
+                { value: 'a12', label: 'b12' },
+                { value: 'a12', label: 'b12' },
+                { value: 'a12', label: 'b12' },
+              ]}
+              placeholder="Please select"
+              defaultValue={['a10', 'c12']}
+              onChange={handleSelectChange}
+              style={{ width: '100%' }}
+            >
+              {children}
+            </Select>
           </div>
         </div>
       </div>
