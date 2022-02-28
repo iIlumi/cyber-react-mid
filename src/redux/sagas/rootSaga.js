@@ -4,6 +4,8 @@ import * as ToDoListSaga from './ToDoListSaga';
 import * as CybugsUser from './Cyberbugs/UserCyberbugsSaga';
 import * as CybugsPrjCategories from './Cyberbugs/ProjectCategorySaga';
 import * as ProjectSaga from './Cyberbugs/ProjectSaga';
+import * as TaskTypeSaga from './Cyberbugs/TaskTypeSaga';
+import * as PrioritySaga from './Cyberbugs/PrioritySaga';
 
 // các action bình thường vẫn chia để riêng ra,
 // Saga chỉ qản lý riêng các action saga (dispatch function)
@@ -37,6 +39,9 @@ export function* rootSaga() {
     ProjectSaga.theoDoiUpdateProjectSaga(),
     ProjectSaga.theoDoiDeleteProject(),
     ProjectSaga.theoDoiGetProjectDetail(),
+
+    TaskTypeSaga.theoDoiGetAllTaskTypeSaga(),
+    PrioritySaga.theoDoiGetAllPriority(),
   ]);
 
   console.log('final root saga');
