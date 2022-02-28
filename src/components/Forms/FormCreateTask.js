@@ -5,6 +5,8 @@ import { useSelector, useDispatch, connect } from 'react-redux';
 import { GET_ALL_PROJECT_SAGA } from '../../redux/constants/Cyberbugs/ProjectCyberBugsConstants';
 import { GET_ALL_TASK_TYPE_SAGA } from '../../redux/constants/Cyberbugs/TaskTypeConstants';
 import { GET_ALL_PRIORITY_SAGA } from '../../redux/constants/Cyberbugs/PriorityConstants';
+import { GET_ALL_STATUS_SAGA } from '../../redux/constants/Cyberbugs/StatusConstant';
+
 import { withFormik } from 'formik';
 import * as Yup from 'yup';
 
@@ -25,6 +27,7 @@ function FormCreateTask(props) {
     TaskTypeReducer: { arrTaskType },
     PriorityReducer: { arrPriority },
     UserLoginCyberBugsReducer: { userSearch },
+    StatusReducer: { arrStatus },
   } = useSelector((state) => state);
 
   // allUser có thể dùng là state nội bộ hoặc đẩy lên redux cũng được
@@ -64,6 +67,8 @@ function FormCreateTask(props) {
     dispatch({ type: GET_ALL_PROJECT_SAGA });
     dispatch({ type: GET_ALL_TASK_TYPE_SAGA });
     dispatch({ type: GET_ALL_PRIORITY_SAGA });
+    dispatch({ type: GET_ALL_STATUS_SAGA });
+
     // Dispatch ngay đây để lấy về userOptions ngay từ đầu
     // Keyword rỗng để lấy tất cả user
     // Sẽ tiết kiệm được việc gọi API
@@ -100,6 +105,23 @@ function FormCreateTask(props) {
           className="form-control"
           onChange={handleChange}
         />
+      </div>
+
+      <div className="form-group">
+        <p>Status</p>
+        <select
+          name="statusId"
+          className="form-control"
+          onChange={handleChange}
+        >
+          {arrStatus.map((statusItem, index) => {
+            return (
+              <option key={index} value={statusItem.statusId}>
+                {statusItem.statusName}
+              </option>
+            );
+          })}
+        </select>
       </div>
 
       <div className="form-group">
