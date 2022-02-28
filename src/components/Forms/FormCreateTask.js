@@ -1,6 +1,6 @@
 import React from 'react';
 import { Editor } from '@tinymce/tinymce-react';
-import { Select } from 'antd';
+import { Select, Slider } from 'antd';
 
 const { Option } = Select;
 const children = [];
@@ -14,7 +14,6 @@ export default function FormCreateTask() {
   function handleSelectChange(value) {
     console.log(`Selected: ${value}`);
   }
-
   return (
     <div className="container">
       <div className="form-group">
@@ -62,6 +61,55 @@ export default function FormCreateTask() {
             >
               {children}
             </Select>
+            {/* https://ant.design/components/input-number/#components-input-number-demo-size` */}
+
+            <div className="row mt-3">
+              <div className="col-12">
+                <p>Original Estimate</p>
+                <input
+                  type="number"
+                  min="0"
+                  name="originalEstimate"
+                  defaultValue="0"
+                  className="form-control"
+                  height="30"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="col-6">
+            <p>Time tracking</p>
+            {/* https://ant.design/components/slider/#components-slider-demo-input-number
+            https://ant.design/components/slider/#components-slider-demo-show-tooltip
+            */}
+
+            <Slider defaultValue={30} tooltipVisible />
+
+            <div className="row" style={{ marginTop: 5 }}>
+              <div className="col-6">
+                <p>Time spent</p>
+                <input
+                  type="number"
+                  defaultValue="0"
+                  min="0"
+                  className="form-control"
+                  name="timeTrackingSpent"
+                  onChange={() => {}}
+                />
+              </div>
+              <div className="col-6">
+                <p>Time remaining</p>
+                <input
+                  type="number"
+                  defaultValue="0"
+                  min="0"
+                  className="form-control"
+                  name="timeTrackingRemaining"
+                  onChange={() => {}}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
