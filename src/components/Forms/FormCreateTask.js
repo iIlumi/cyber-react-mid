@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { Select, Slider } from 'antd';
+import { useSelector, useDispatch } from 'react-redux';
+import { GET_ALL_PROJECT_SAGA } from '../../redux/constants/Cyberbugs/ProjectCyberBugsConstants';
+import { GET_ALL_TASK_TYPE_SAGA } from '../../redux/constants/Cyberbugs/TaskTypeConstants';
+import { GET_ALL_PRIORITY_SAGA } from '../../redux/constants/Cyberbugs/PriorityConstants';
 
 const { Option } = Select;
 const children = [];
@@ -9,6 +13,19 @@ for (let i = 20; i < 36; i++) {
 }
 
 export default function FormCreateTask() {
+  //Lấy dữ liệu từ redux
+  // const { arrProject } = useSelector((state) => state.ProjectCyberBugsReducer);
+  // const { arrTaskType } = useSelector((state) => state.TaskTypeReducer);
+  // const { arrPriority } = useSelector((state) => state.PriorityReducer);
+
+  const {
+    ProjectCyberBugsReducer: { arrProject },
+    TaskTypeReducer: { arrTaskType },
+    PriorityReducer: { arrPriority },
+  } = useSelector((state) => state);
+
+  const dispatch = useDispatch();
+
   const [timeTracking, setTimetracking] = useState({
     timeTrackingSpent: 0,
     timeTrackingRemaining: 0,
@@ -20,13 +37,29 @@ export default function FormCreateTask() {
     console.log(`Selected: ${value}`);
   }
 
+  //hook
+  useEffect(() => {
+    dispatch({ type: GET_ALL_PROJECT_SAGA });
+    dispatch({ type: GET_ALL_TASK_TYPE_SAGA });
+    dispatch({ type: GET_ALL_PRIORITY_SAGA });
+  }, [dispatch]);
+
+  console.log('arrTaskType:', arrTaskType);
+
+  // Chú ý là khi close Modal hook vẫn chạy lại vì component cha bị re-render -> toàn bộ con bị theo, gọi API ko cần thiết khi cancel new task
+
   return (
     <div className="container">
       <div className="form-group">
         <p>Project</p>
         <select name="projectId" className="form-control">
-          <option value="54">Project A</option>
-          <option value="55">Project A</option>
+          {arrProject.map((project, index) => {
+            return (
+              <option key={index} value={project.id}>
+                {project.projectName}
+              </option>
+            );
+          })}
         </select>
       </div>
       <div className="form-group">
@@ -34,15 +67,25 @@ export default function FormCreateTask() {
           <div className="col-6">
             <p>Priority</p>
             <select name="priorityId" className="form-control">
-              <option>High</option>
-              <option>Low</option>
+              {arrPriority.map((priority, index) => {
+                return (
+                  <option key={index} value={priority.priorityId}>
+                    {priority.priority}
+                  </option>
+                );
+              })}
             </select>
           </div>
           <div className="col-6">
             <p>Task type</p>
             <select className="form-control" name="typeId">
-              <option>New Task</option>
-              <option>Bugs</option>
+              {arrTaskType.map((taskType, index) => {
+                return (
+                  <option key={index} value={taskType.id}>
+                    {taskType.taskType}
+                  </option>
+                );
+              })}
             </select>
           </div>
         </div>

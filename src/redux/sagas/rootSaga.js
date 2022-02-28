@@ -39,6 +39,7 @@ export function* rootSaga() {
     ProjectSaga.theoDoiUpdateProjectSaga(),
     ProjectSaga.theoDoiDeleteProject(),
     ProjectSaga.theoDoiGetProjectDetail(),
+    ProjectSaga.theoDoiGetAllProjectSaga(),
 
     TaskTypeSaga.theoDoiGetAllTaskTypeSaga(),
     PrioritySaga.theoDoiGetAllPriority(),
