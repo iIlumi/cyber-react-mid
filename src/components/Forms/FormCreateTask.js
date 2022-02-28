@@ -8,7 +8,7 @@ import { GET_ALL_PRIORITY_SAGA } from '../../redux/constants/Cyberbugs/PriorityC
 
 const { Option } = Select;
 const children = [];
-for (let i = 20; i < 36; i++) {
+for (let i = 10; i < 36; i++) {
   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
 }
 
@@ -22,13 +22,21 @@ export default function FormCreateTask() {
     ProjectCyberBugsReducer: { arrProject },
     TaskTypeReducer: { arrTaskType },
     PriorityReducer: { arrPriority },
+    UserLoginCyberBugsReducer: { userSearch },
   } = useSelector((state) => state);
+
+  // allUser có thể dùng là state nội bộ hoặc đẩy lên redux cũng được
 
   const dispatch = useDispatch();
 
   const [timeTracking, setTimetracking] = useState({
     timeTrackingSpent: 0,
     timeTrackingRemaining: 0,
+  });
+
+  //Hàm biến đổi options cho thẻ select
+  const userOptions = userSearch.map((item, index) => {
+    return { value: item.userId, label: item.name };
   });
 
   const handleEditorChange = (content, editor) => {};
@@ -42,6 +50,10 @@ export default function FormCreateTask() {
     dispatch({ type: GET_ALL_PROJECT_SAGA });
     dispatch({ type: GET_ALL_TASK_TYPE_SAGA });
     dispatch({ type: GET_ALL_PRIORITY_SAGA });
+    // Dispatch ngay đây để lấy về userOptions ngay từ đầu
+    // Keyword rỗng để lấy tất cả user
+    // Sẽ tiết kiệm được việc gọi API
+    dispatch({ type: 'GET_USER_API', keyWord: '' });
   }, [dispatch]);
 
   console.log('arrTaskType:', arrTaskType);
@@ -98,13 +110,25 @@ export default function FormCreateTask() {
             <Select
               mode="multiple"
               size="default"
-              options={[
-                { value: 'a12', label: 'b12' },
-                { value: 'a12', label: 'b12' },
-                { value: 'a12', label: 'b12' },
-              ]}
+              options={
+                //   [
+                //   { value: 'a12', label: 'b12' },
+                //   { value: 'a13', label: 'b13' },
+                //   { value: 'a14', label: 'b14' },
+                // ]
+                userOptions
+              }
+              
+              // Có thể gọi API trong search vẫn OK
+              // Note thêm là search theo value chứ ko dùng label
+              // Phải chỉnh lại option
+              optionFilterProp="label"
+              // onSearch={(value) => {
+              //   console.log('andt Select input search:', value);
+              //   dispatch({ type: 'GET_USER_API', keyWord: value });
+              // }}
               placeholder="Please select"
-              defaultValue={['a10', 'c12']}
+              // defaultValue={['a10', 'c12']}
               onChange={handleSelectChange}
               style={{ width: '100%' }}
             >

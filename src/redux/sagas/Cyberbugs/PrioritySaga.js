@@ -7,7 +7,7 @@ import {
 
 function* getAllPrioritySaga(action) {
   try {
-    const { data, status } = yield call(() => priorityService.getAllPriority());
+    const { data } = yield call(() => priorityService.getAllPriority());
 
     yield put({ type: GET_ALL_PRIORITY, arrPriority: data.content });
   } catch (err) {

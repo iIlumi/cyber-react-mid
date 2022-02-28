@@ -208,7 +208,7 @@ function* getProjectAllSaga(action) {
   yield delay(500);
 
   try {
-    const { data, status } = yield call(() => projectService.getAllProject());
+    const { data } = yield call(() => projectService.getAllProject());
 
     //Lấy dữ liệu thành công thì đưa dữ liệu lên redux
     yield put({

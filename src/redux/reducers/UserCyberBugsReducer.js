@@ -16,6 +16,8 @@ if (localStorage.getItem(USER_LOGIN)) {
 const stateDefault = {
   userLoginInfo: userLoginInfo,
   userSearch: [],
+  // arrUser:[]//Array user cho thẻ select create task
+  // Tuy nhiên ta tận dụng lại userSearch chung logic luôn
 };
 
 export const UserLoginCyberBugsReducer = (state = stateDefault, action) => {

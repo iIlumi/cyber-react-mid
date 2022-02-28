@@ -62,6 +62,7 @@ function* getUserSaga(action) {
   //Gọi api
   try {
     const { data } = yield call(() => userService.getUser(action.keyWord));
+    // console.log('data getUserSaga:', data)
 
     yield put({
       type: 'GET_USER_SEARCH',
