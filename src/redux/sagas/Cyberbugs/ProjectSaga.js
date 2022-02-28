@@ -169,7 +169,7 @@ function* getProjectDetailSaga(action) {
   yield delay(500);
 
   try {
-    const { data, status } = yield call(() =>
+    const { data } = yield call(() =>
       projectService.getProjectDetail(action.projectId)
     );
 
