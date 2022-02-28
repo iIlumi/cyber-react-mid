@@ -5,17 +5,16 @@ import { useDispatch, useSelector } from 'react-redux';
 // https://ant.design/components/drawer/#components-drawer-demo-form-in-drawer
 
 export default function DrawerCyberBugs(props) {
-  const { visible, ComponentContentDrawer, callBackSubmit } = useSelector(
-    (state) => state.DrawerReducer
-  );
+  const { visible, ComponentContentDrawer, callBackSubmit, title } =
+    useSelector((state) => state.DrawerReducer);
 
   const dispatch = useDispatch();
 
   console.log('visible', visible);
 
-//   const showDrawer = () => {
-//     dispatch({ type: 'OPEN_DRAWER' });
-//   };
+  //   const showDrawer = () => {
+  //     dispatch({ type: 'OPEN_DRAWER' });
+  //   };
 
   const onClose = () => {
     dispatch({ type: 'CLOSE_DRAWER' });
@@ -24,7 +23,7 @@ export default function DrawerCyberBugs(props) {
     <>
       {/* <button onClick={showDrawer}>showdrawer</button> */}
       <Drawer
-        title="Create a new account"
+        title={title}
         width={720}
         onClose={onClose}
         visible={visible}
