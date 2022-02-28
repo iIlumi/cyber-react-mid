@@ -122,7 +122,7 @@ export default function Header() {
             <NavLink
               style={({ isActive }) => activeLinkStyle(isActive)}
               className="nav-link"
-              to="/cyberbugs"
+              to="/projectmanagement"
             >
               Cybugs
             </NavLink>

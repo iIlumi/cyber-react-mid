@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 export default function IndexCyberBugs(props) {
   console.log('indexCyberBugs(props):', props);
   const { projectId } = useParams();
+  console.log('projectId - useParams:', projectId);
   // ko nên bóc tách ngay trên đây vì projectId là primitive ?
   // Nếu component tự gọi lại chính nó thì dặt ở trên đây còn chạy bình thường ko
 
@@ -17,19 +18,20 @@ export default function IndexCyberBugs(props) {
   useEffect(() => {
     //Khi người dùng link qua trang này bằng thẻ navlink hoặc người dùng tự gõ url thì ta sẽ lấy tham số từ url => gọi saga
     // const { projectId } = props.match.params;
-    dispatch({
-      type: 'GET_PROJECT_DETAIL',
-      projectId,
-    });
+    projectId &&
+      dispatch({
+        type: 'GET_PROJECT_DETAIL',
+        projectId,
+      });
   }, [dispatch, projectId]);
 
   return (
     <div className="main">
-      <HeaderMain />
+      <HeaderMain projectDetail={projectDetail} />
 
-      <InfoMain />
+      <InfoMain projectDetail={projectDetail} />
 
-      <ContentMain />
+      <ContentMain projectDetail={projectDetail} />
     </div>
   );
 }
