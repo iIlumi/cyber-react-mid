@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { Select, Slider } from 'antd';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, connect } from 'react-redux';
 import { GET_ALL_PROJECT_SAGA } from '../../redux/constants/Cyberbugs/ProjectCyberBugsConstants';
 import { GET_ALL_TASK_TYPE_SAGA } from '../../redux/constants/Cyberbugs/TaskTypeConstants';
 import { GET_ALL_PRIORITY_SAGA } from '../../redux/constants/Cyberbugs/PriorityConstants';
+import { withFormik } from 'formik';
+import * as Yup from 'yup';
 
 const { Option } = Select;
 const children = [];
@@ -12,7 +14,7 @@ for (let i = 10; i < 36; i++) {
   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
 }
 
-export default function FormCreateTask() {
+function FormCreateTask(props) {
   //Lấy dữ liệu từ redux
   // const { arrProject } = useSelector((state) => state.ProjectCyberBugsReducer);
   // const { arrTaskType } = useSelector((state) => state.TaskTypeReducer);
@@ -34,16 +36,28 @@ export default function FormCreateTask() {
     timeTrackingRemaining: 0,
   });
 
+  //Do kết nối với withformik => component có các props
+  const {
+    // values,
+    // touched,
+    // errors,
+    handleChange,
+    // handleBlur,
+    handleSubmit,
+    // setValues,
+    setFieldValue,
+  } = props;
+
   //Hàm biến đổi options cho thẻ select
   const userOptions = userSearch.map((item, index) => {
     return { value: item.userId, label: item.name };
   });
 
-  const handleEditorChange = (content, editor) => {};
+  // const handleEditorChange = (content, editor) => {};
 
-  function handleSelectChange(value) {
-    console.log(`Selected: ${value}`);
-  }
+  // function handleSelectChange(value) {
+  //   console.log(`Selected: ${value}`);
+  // }
 
   //hook
   useEffect(() => {
@@ -61,10 +75,14 @@ export default function FormCreateTask() {
   // Chú ý là khi close Modal hook vẫn chạy lại vì component cha bị re-render -> toàn bộ con bị theo, gọi API ko cần thiết khi cancel new task
 
   return (
-    <div className="container">
+    <form className="container" onSubmit={handleSubmit}>
       <div className="form-group">
         <p>Project</p>
-        <select name="projectId" className="form-control">
+        <select
+          name="projectId"
+          className="form-control"
+          onChange={handleChange}
+        >
           {arrProject.map((project, index) => {
             return (
               <option key={index} value={project.id}>
@@ -74,11 +92,25 @@ export default function FormCreateTask() {
           })}
         </select>
       </div>
+
+      <div className="form-group">
+        <p>Task name</p>
+        <input
+          name="taskName"
+          className="form-control"
+          onChange={handleChange}
+        />
+      </div>
+
       <div className="form-group">
         <div className="row">
           <div className="col-6">
             <p>Priority</p>
-            <select name="priorityId" className="form-control">
+            <select
+              name="priorityId"
+              className="form-control"
+              onChange={handleChange}
+            >
               {arrPriority.map((priority, index) => {
                 return (
                   <option key={index} value={priority.priorityId}>
@@ -88,9 +120,14 @@ export default function FormCreateTask() {
               })}
             </select>
           </div>
+
           <div className="col-6">
             <p>Task type</p>
-            <select className="form-control" name="typeId">
+            <select
+              className="form-control"
+              name="typeId"
+              onChange={handleChange}
+            >
               {arrTaskType.map((taskType, index) => {
                 return (
                   <option key={index} value={taskType.id}>
@@ -118,7 +155,6 @@ export default function FormCreateTask() {
                 // ]
                 userOptions
               }
-              
               // Có thể gọi API trong search vẫn OK
               // Note thêm là search theo value chứ ko dùng label
               // Phải chỉnh lại option
@@ -129,7 +165,13 @@ export default function FormCreateTask() {
               // }}
               placeholder="Please select"
               // defaultValue={['a10', 'c12']}
-              onChange={handleSelectChange}
+              // onChange này là của antd, ko phải của React component thường
+              onChange={(values) => {
+                setFieldValue('listUserAsign', values);
+              }}
+              onSelect={(value) => {
+                console.log(value);
+              }}
               style={{ width: '100%' }}
             >
               {children}
@@ -146,6 +188,7 @@ export default function FormCreateTask() {
                   defaultValue="0"
                   className="form-control"
                   height="30"
+                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -189,6 +232,8 @@ export default function FormCreateTask() {
                       ...timeTracking,
                       timeTrackingSpent: e.target.value,
                     });
+                    // Component thường khác với TH select nên có thể dùng 2 cách
+                    handleChange(e);
                   }}
                 />
               </div>
@@ -205,6 +250,8 @@ export default function FormCreateTask() {
                       ...timeTracking,
                       timeTrackingRemaining: e.target.value,
                     });
+                    // ở đây sẽ nhận là str, nên cần manual convert lại
+                    setFieldValue('timeTrackingRemaining', +e.target.value);
                   }}
                 />
               </div>
@@ -229,9 +276,43 @@ export default function FormCreateTask() {
             toolbar:
               'undo redo | formatselect | bold italic backcolor |  alignleft aligncenter alignright alignjustify |  bullist numlist outdent indent | removeformat | help',
           }}
-          onEditorChange={handleEditorChange}
+          onEditorChange={(content, editor) => {
+            setFieldValue('description', content);
+          }}
         />
       </div>
-    </div>
+      {/* Nút submit đặt tạm để debug */}
+      <button type="submit">submit</button>
+    </form>
   );
 }
+
+const frmCreateTask = withFormik({
+  // enableReinitialize: true,
+  mapPropsToValues: (props) => {
+    // Trùng với name của những input đã tạo rồi
+    // Các name của input trongform nên cố đặt giống data BE trả về
+
+    return {
+      taskName: '',
+      description: '',
+      statusId: 1,
+      originalEstimate: 0,
+      timeTrackingSpent: 0,
+      timeTrackingRemaining: 0,
+      projectId: 0,
+      typeId: 0,
+      priorityId: 0,
+      listUserAsign: [],
+    };
+  },
+
+  validationSchema: Yup.object().shape({}),
+  displayName: 'createTaskForm',
+
+  handleSubmit: (values, { props, setSubmitting }) => {
+    console.log('taskobject', values);
+  },
+})(FormCreateTask);
+
+export default connect()(frmCreateTask);
