@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { Select, Slider } from 'antd';
 
@@ -9,11 +9,17 @@ for (let i = 20; i < 36; i++) {
 }
 
 export default function FormCreateTask() {
+  const [timeTracking, setTimetracking] = useState({
+    timeTrackingSpent: 0,
+    timeTrackingRemaining: 0,
+  });
+
   const handleEditorChange = (content, editor) => {};
 
   function handleSelectChange(value) {
     console.log(`Selected: ${value}`);
   }
+
   return (
     <div className="container">
       <div className="form-group">
@@ -84,8 +90,24 @@ export default function FormCreateTask() {
             https://ant.design/components/slider/#components-slider-demo-show-tooltip
             */}
 
-            <Slider defaultValue={30} tooltipVisible />
+            <Slider
+              defaultValue={30}
+              tooltipVisible
+              value={timeTracking.timeTrackingSpent}
+              max={
+                Number(timeTracking.timeTrackingSpent) +
+                Number(timeTracking.timeTrackingRemaining)
+              }
+            />
 
+            <div className="row">
+              <div className="col-6 text-left font-weight-bold">
+                {timeTracking.timeTrackingSpent}h logged
+              </div>
+              <div className="col-6 text-right font-weight-bold">
+                {timeTracking.timeTrackingRemaining}h remaining
+              </div>
+            </div>
             <div className="row" style={{ marginTop: 5 }}>
               <div className="col-6">
                 <p>Time spent</p>
@@ -95,7 +117,12 @@ export default function FormCreateTask() {
                   min="0"
                   className="form-control"
                   name="timeTrackingSpent"
-                  onChange={() => {}}
+                  onChange={(e) => {
+                    setTimetracking({
+                      ...timeTracking,
+                      timeTrackingSpent: e.target.value,
+                    });
+                  }}
                 />
               </div>
               <div className="col-6">
@@ -106,7 +133,12 @@ export default function FormCreateTask() {
                   min="0"
                   className="form-control"
                   name="timeTrackingRemaining"
-                  onChange={() => {}}
+                  onChange={(e) => {
+                    setTimetracking({
+                      ...timeTracking,
+                      timeTrackingRemaining: e.target.value,
+                    });
+                  }}
                 />
               </div>
             </div>
