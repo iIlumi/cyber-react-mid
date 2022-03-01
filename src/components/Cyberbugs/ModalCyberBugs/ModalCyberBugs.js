@@ -3,13 +3,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import parse from 'html-react-parser';
 import { GET_ALL_STATUS_SAGA } from '../../../redux/constants/Cyberbugs/StatusConstant';
 import { GET_ALL_PRIORITY_SAGA } from '../../../redux/constants/Cyberbugs/PriorityConstants';
-import { CHANGE_TASK_MODAL } from '../../../redux/constants/Cyberbugs/TaskConstants';
+import {
+  CHANGE_TASK_MODAL,
+  ADD_ASSIGNESS,
+  REMOVE_USER_ASSIGN,
+} from '../../../redux/constants/Cyberbugs/TaskConstants';
 import { GET_ALL_TASK_TYPE_SAGA } from '../../../redux/constants/Cyberbugs/TaskTypeConstants';
 // import { UPDATE_STATUS_TASK_SAGA } from '../../../redux/constants/Cyberbugs/TaskConstants';
 import { Editor } from '@tinymce/tinymce-react';
 import { Select } from 'antd';
 
-const { Option } = Select;
+// const { Option } = Select;
 
 export default function ModalCyberBugs(props) {
   const {
@@ -312,7 +316,12 @@ export default function ModalCyberBugs(props) {
                                 <i
                                   className="fa fa-times"
                                   style={{ marginLeft: 5, cursor: 'pointer' }}
-                                  onClick={() => {}}
+                                  onClick={() => {
+                                    dispatch({
+                                      type: REMOVE_USER_ASSIGN,
+                                      userId: user.id,
+                                    });
+                                  }}
                                 />
                               </p>
                             </div>
@@ -320,7 +329,7 @@ export default function ModalCyberBugs(props) {
                         );
                       })}
                       <div className="col-6  mt-2 mb-2">
-                        <div className="col-12 border border-primary mb-2">
+                        <div className="col-12 border border-danger mb-2">
                           <i
                             className="fa fa-plus"
                             style={{ marginRight: 5 }}
@@ -329,8 +338,19 @@ export default function ModalCyberBugs(props) {
                           <select
                             name="lstUser"
                             className="form-control"
-                            onChange={(e) => {}}
+                            defaultValue="0"
+                            // Sử dụng onClick mới đúng
+                            // onChange chỉ thêm được đúng 1 người
+                            // Thêm width auto và set thêm default value = 0
+                            //
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              if (value === '0') {
+                                return;
+                              }
+                            }}
                           >
+                            <option value="0">Select user assign</option>
                             {projectDetail.members?.map((mem, index) => {
                               return (
                                 <option value={mem.userId} key={index}>
@@ -342,20 +362,42 @@ export default function ModalCyberBugs(props) {
                         </div>
 
                         <Select
-                          mode="multiple"
-                          size="default"
-                          options={[
-                            { value: 'a12', label: 'b12' },
-                            { value: 'a13', label: 'b13' },
-                            { value: 'a14', label: 'b14' },
-                          ]}
+                          // mode="multiple"
+                          // size="default"
+                          options={projectDetail.members
+                            ?.filter((mem) => {
+                              return taskDetailModal.assigness?.findIndex(
+                                (us) => us.id === mem.userId
+                              ) !== -1
+                                ? false
+                                : true;
+                            })
+                            .map((mem, index) => {
+                              return { value: mem.userId, label: mem.name };
+                            })}
                           optionFilterProp="label"
                           style={{ width: '100%' }}
+                          name="lstUser"
+                          value="+ Add more"
+                          className="form-control"
                           onSelect={(value) => {
-                            console.log(
-                              '🚀 ~ file: ModalCyberBugs.js ~ line 338 ~ value',
-                              value
+                            if (value === '0') {
+                              return;
+                            }
+                            let userSelected = projectDetail.members.find(
+                              (mem) => mem.userId === value
                             );
+                            // console.log(
+                            //   '🚀 ~ file: ModalCyberBugs.js ~ line 395 ~ userSelected.userId',
+                            //   userSelected.userId
+                            // );
+                            dispatch({
+                              type: ADD_ASSIGNESS,
+                              userSelected: {
+                                ...userSelected,
+                                id: userSelected.userId,
+                              },
+                            });
                           }}
                           placeholder="Please select"
                         />
