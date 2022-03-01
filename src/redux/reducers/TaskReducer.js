@@ -39,6 +39,10 @@ const initialState = {
 export const TaskReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_TASK_DETAIL: {
+      console.log(
+        '🚀 ~ file: TaskReducer.js ~ line 44 ~ action.taskDetailModal',
+        action.taskDetailModal
+      );
       return { ...state, taskDetailModal: action.taskDetailModal };
     }
 

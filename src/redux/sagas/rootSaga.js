@@ -36,8 +36,6 @@ export function* rootSaga() {
     CybugsUser.theoDoiRemoveUserProject(),
     CybugsUser.theoDoiGetUserByProjectIdSaga(),
 
-    CybugsPrjCategories.theoDoigetAllProjectCategory(),
-
     ProjectSaga.theoDoiCreateProjectSaga(),
     ProjectSaga.theoDoiGetListProjectSaga(),
     ProjectSaga.theoDoiUpdateProjectSaga(),
@@ -46,13 +44,14 @@ export function* rootSaga() {
     ProjectSaga.theoDoiGetAllProjectSaga(),
 
     TaskTypeSaga.theoDoiGetAllTaskTypeSaga(),
-
+    StatusSaga.theoDoiGetAllStatusSaga(),
     PrioritySaga.theoDoiGetAllPriority(),
+
+    CybugsPrjCategories.theoDoigetAllProjectCategory(),
 
     TaskSaga.theoDoiCreateTaskSaga(),
     TaskSaga.theoDoiGetTaskDetailSaga(),
-
-    StatusSaga.theoDoiGetAllStatusSaga(),
+    TaskSaga.theoDoiUpdateTaskStatusSaga(),
   ]);
 
   console.log('final root saga');

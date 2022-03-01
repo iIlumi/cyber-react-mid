@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import parse from 'html-react-parser';
 import { GET_ALL_STATUS_SAGA } from '../../../redux/constants/Cyberbugs/StatusConstant';
 import { GET_ALL_PRIORITY_SAGA } from '../../../redux/constants/Cyberbugs/PriorityConstants';
+import { UPDATE_STATUS_TASK_SAGA } from '../../../redux/constants/Cyberbugs/TaskConstants';
 
 export default function ModalCyberBugs(props) {
   const {
@@ -165,7 +166,25 @@ export default function ModalCyberBugs(props) {
                     <select
                       className="custom-select"
                       value={taskDetailModal.statusId}
-                      onChange={(e) => {}}
+                      onChange={(e) => {
+                        const action = {
+                          type: UPDATE_STATUS_TASK_SAGA,
+                          taskUpdateStatus: {
+                            taskId: taskDetailModal.taskId,
+                            statusId: e.target.value,
+                            // prj ID dispatch kèm để reload lại trang Proj detail tổng phía sau Modal
+                            projectId: taskDetailModal.projectId,
+                          },
+                        };
+
+                        // console.log('action', action);
+                        console.log('taskupdatestatus', {
+                          taskId: taskDetailModal.taskId,
+                          statusId: e.target.value,
+                        });
+
+                        dispatch(action);
+                      }}
                     >
                       {/* <option>SELECTED FOR DEVELOPMENT</option>
                       <option value={1}>One</option>
