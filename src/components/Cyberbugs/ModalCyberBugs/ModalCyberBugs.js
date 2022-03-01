@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import parse from 'html-react-parser';
 import { GET_ALL_STATUS_SAGA } from '../../../redux/constants/Cyberbugs/StatusConstant';
 import { GET_ALL_PRIORITY_SAGA } from '../../../redux/constants/Cyberbugs/PriorityConstants';
-import { UPDATE_STATUS_TASK_SAGA } from '../../../redux/constants/Cyberbugs/TaskConstants';
+import { CHANGE_TASK_MODAL } from '../../../redux/constants/Cyberbugs/TaskConstants';
+// import { UPDATE_STATUS_TASK_SAGA } from '../../../redux/constants/Cyberbugs/TaskConstants';
 
 export default function ModalCyberBugs(props) {
   const {
@@ -19,6 +20,15 @@ export default function ModalCyberBugs(props) {
     dispatch({ type: GET_ALL_STATUS_SAGA });
     dispatch({ type: GET_ALL_PRIORITY_SAGA });
   }, [dispatch]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    dispatch({
+      type: CHANGE_TASK_MODAL,
+      name,
+      value,
+    });
+  };
 
   return (
     <div
@@ -166,24 +176,33 @@ export default function ModalCyberBugs(props) {
                     <select
                       className="custom-select"
                       value={taskDetailModal.statusId}
+                      name="statusId"
+                      // Name đặt giống data API BE trả về
                       onChange={(e) => {
-                        const action = {
-                          type: UPDATE_STATUS_TASK_SAGA,
-                          taskUpdateStatus: {
-                            taskId: taskDetailModal.taskId,
-                            statusId: e.target.value,
-                            // prj ID dispatch kèm để reload lại trang Proj detail tổng phía sau Modal
-                            projectId: taskDetailModal.projectId,
-                          },
-                        };
+                        // Cách update 1 obj tổng
+                        // tự extract ra trong tầng logic của saga-redux
+                        // Nhưng phải tuân thủ đúng-đủ theo API
+                        handleChange(e);
 
-                        // console.log('action', action);
-                        console.log('taskupdatestatus', {
-                          taskId: taskDetailModal.taskId,
-                          statusId: e.target.value,
-                        });
+                        // Cách update theo từng API riêng cho mỗi thông số
 
-                        dispatch(action);
+                        // const action = {
+                        //   type: UPDATE_STATUS_TASK_SAGA,
+                        //   taskUpdateStatus: {
+                        //     taskId: taskDetailModal.taskId,
+                        //     statusId: e.target.value,
+                        //     // prj ID dispatch kèm để reload lại trang Proj detail tổng phía sau Modal
+                        //     projectId: taskDetailModal.projectId,
+                        //   },
+                        // };
+
+                        // // console.log('action', action);
+                        // console.log('taskupdatestatus', {
+                        //   taskId: taskDetailModal.taskId,
+                        //   statusId: e.target.value,
+                        // });
+
+                        // dispatch(action);
                       }}
                     >
                       {/* <option>SELECTED FOR DEVELOPMENT</option>
@@ -249,8 +268,11 @@ export default function ModalCyberBugs(props) {
                     <h6>PRIORITY</h6>
                     <select
                       className="form-control"
-                      value={taskDetailModal.priorityTask?.priorityId}
-                      onChange={(e) => {}}
+                      name="priorityId"
+                      value={taskDetailModal.priorityId}
+                      onChange={(e) => {
+                        handleChange(e);
+                      }}
                     >
                       {arrPriority.map((item, index) => {
                         return (
@@ -267,7 +289,10 @@ export default function ModalCyberBugs(props) {
                       type="text"
                       className="estimate-hours"
                       value={taskDetailModal.originalEstimate}
-                      onChange={(e) => {}}
+                      name="originalEstimate"
+                      onChange={(e) => {
+                        handleChange(e);
+                      }}
                     />
                   </div>
                   <div className="time-tracking">
