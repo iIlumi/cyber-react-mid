@@ -78,6 +78,9 @@ function FormCreateTask(props) {
     // Keyword rỗng để lấy tất cả user
     // Sẽ tiết kiệm được việc gọi API
     dispatch({ type: 'GET_USER_API', keyWord: '' });
+
+    //Đưa hàm handle submit lên drawer reducer để cập nhật lại sự kiện cho nút submitt
+    dispatch({ type: 'SET_SUBMIT_CREATE_TASK', submitFunction: handleSubmit });
   }, [dispatch]);
 
   console.log('arrTaskType:', arrTaskType);
@@ -322,7 +325,7 @@ function FormCreateTask(props) {
         />
       </div>
       {/* Nút submit đặt tạm để debug */}
-      <button type="submit">submit</button>
+      {/* <button type="submit">submit</button> */}
     </form>
   );
 }

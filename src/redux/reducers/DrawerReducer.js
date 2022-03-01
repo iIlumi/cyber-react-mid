@@ -41,6 +41,11 @@ export const DrawerReducer = (state = initialState, action) => {
       state.title = action.title;
       return { ...state };
     }
+
+    case 'SET_SUBMIT_CREATE_TASK': {
+      return { ...state, callBackSubmit: action.submitFunction };
+    }
+
     default:
       return state;
   }
