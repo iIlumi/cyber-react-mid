@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import parse from 'html-react-parser';
 import { GET_ALL_STATUS_SAGA } from '../../../redux/constants/Cyberbugs/StatusConstant';
@@ -6,6 +6,7 @@ import { GET_ALL_PRIORITY_SAGA } from '../../../redux/constants/Cyberbugs/Priori
 import { CHANGE_TASK_MODAL } from '../../../redux/constants/Cyberbugs/TaskConstants';
 import { GET_ALL_TASK_TYPE_SAGA } from '../../../redux/constants/Cyberbugs/TaskTypeConstants';
 // import { UPDATE_STATUS_TASK_SAGA } from '../../../redux/constants/Cyberbugs/TaskConstants';
+import { Editor } from '@tinymce/tinymce-react';
 
 export default function ModalCyberBugs(props) {
   const {
@@ -14,6 +15,9 @@ export default function ModalCyberBugs(props) {
     PriorityReducer: { arrPriority },
     TaskTypeReducer: { arrTaskType },
   } = useSelector((state) => state);
+
+  const [visibleEditor, setVisibleEditor] = useState(false);
+  const [content, setContent] = useState(taskDetailModal.description);
 
   // console.log('taskDetailModal:', taskDetailModal)
   const dispatch = useDispatch();
@@ -92,7 +96,61 @@ export default function ModalCyberBugs(props) {
                   <p className="issue">This is an issue of type: Task.</p>
                   <div className="description">
                     <p>Description</p>
-                    <div>{parse(taskDetailModal.description)}</div>
+                    <div>
+                      {visibleEditor ? (
+                        <>
+                          <Editor
+                            name="description"
+                            initialValue={taskDetailModal.description}
+                            apiKey="hne9imm2uv75ei85awm7wtyi1tmp59rqr6x20g9omuq0fp4i"
+                            init={{
+                              selector: 'textarea#myTextArea',
+                              height: 500,
+                              menubar: false,
+                              plugins: [
+                                'advlist autolink lists link image charmap print preview anchor',
+                                'searchreplace visualblocks code fullscreen',
+                                'insertdatetime media table paste code help wordcount',
+                              ],
+                              toolbar:
+                                'undo redo | formatselect | bold italic backcolor |  alignleft aligncenter alignright alignjustify |  bullist numlist outdent indent | removeformat | help',
+                            }}
+                            onEditorChange={(content, editor) => {
+                              setContent(content);
+                            }}
+                          />
+                          <button
+                            className="btn btn-primary m-2"
+                            onClick={() => {
+                              dispatch({
+                                type: CHANGE_TASK_MODAL,
+                                name: 'description',
+                                value: content,
+                              });
+                              setVisibleEditor(false);
+                            }}
+                          >
+                            Save
+                          </button>
+                          <button
+                            className="btn btn-primary m-2"
+                            onClick={() => {
+                              setVisibleEditor(false);
+                            }}
+                          >
+                            Close
+                          </button>
+                        </>
+                      ) : (
+                        <div
+                          onClick={() => {
+                            setVisibleEditor(!visibleEditor);
+                          }}
+                        >
+                          {parse(taskDetailModal.description)}
+                        </div>
+                      )}
+                    </div>
                     {/* </div>
                   <div style={{ fontWeight: 500, marginBottom: 10 }}>
                     Jira Software (software projects) issue types:
