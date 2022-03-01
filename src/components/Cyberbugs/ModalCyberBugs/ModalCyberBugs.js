@@ -4,6 +4,7 @@ import parse from 'html-react-parser';
 import { GET_ALL_STATUS_SAGA } from '../../../redux/constants/Cyberbugs/StatusConstant';
 import { GET_ALL_PRIORITY_SAGA } from '../../../redux/constants/Cyberbugs/PriorityConstants';
 import { CHANGE_TASK_MODAL } from '../../../redux/constants/Cyberbugs/TaskConstants';
+import { GET_ALL_TASK_TYPE_SAGA } from '../../../redux/constants/Cyberbugs/TaskTypeConstants';
 // import { UPDATE_STATUS_TASK_SAGA } from '../../../redux/constants/Cyberbugs/TaskConstants';
 
 export default function ModalCyberBugs(props) {
@@ -11,6 +12,7 @@ export default function ModalCyberBugs(props) {
     TaskReducer: { taskDetailModal },
     StatusReducer: { arrStatus },
     PriorityReducer: { arrPriority },
+    TaskTypeReducer: { arrTaskType },
   } = useSelector((state) => state);
 
   // console.log('taskDetailModal:', taskDetailModal)
@@ -19,6 +21,7 @@ export default function ModalCyberBugs(props) {
   useEffect(() => {
     dispatch({ type: GET_ALL_STATUS_SAGA });
     dispatch({ type: GET_ALL_PRIORITY_SAGA });
+    dispatch({ type: GET_ALL_TASK_TYPE_SAGA });
   }, [dispatch]);
 
   const handleChange = (e) => {
@@ -44,6 +47,19 @@ export default function ModalCyberBugs(props) {
           <div className="modal-header">
             <div className="task-title">
               <i className="fa fa-bookmark" />
+              <select
+                name="typeId"
+                value={taskDetailModal.typeId}
+                onChange={handleChange}
+              >
+                {arrTaskType.map((tp, index) => {
+                  return (
+                    <option value={tp.id} key={index}>
+                      {tp.taskType}
+                    </option>
+                  );
+                })}
+              </select>
               <span>{taskDetailModal.taskName}</span>
             </div>
             <div style={{ display: 'flex' }} className="task-click">
@@ -342,6 +358,24 @@ export default function ModalCyberBugs(props) {
                         );
                       })()
                     }
+
+                    <div className="row">
+                      <div className="col-6">
+                        <input
+                          className="form-control"
+                          name="timeTrackingSpent"
+                          onChange={handleChange}
+                        />
+                      </div>
+
+                      <div className="col-6">
+                        <input
+                          className="form-control"
+                          name="timeTrackingRemaining"
+                          onChange={handleChange}
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div style={{ color: '#929398' }}>Create at a month ago</div>
                   <div style={{ color: '#929398' }}>
