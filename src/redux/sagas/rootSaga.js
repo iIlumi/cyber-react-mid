@@ -50,6 +50,7 @@ export function* rootSaga() {
     PrioritySaga.theoDoiGetAllPriority(),
 
     TaskSaga.theoDoiCreateTaskSaga(),
+    TaskSaga.theoDoiGetTaskDetailSaga(),
 
     StatusSaga.theoDoiGetAllStatusSaga(),
   ]);

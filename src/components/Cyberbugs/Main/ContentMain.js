@@ -1,7 +1,10 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { GET_TASK_DETAIL_SAGA } from '../../../redux/constants/Cyberbugs/TaskConstants';
 
 export default function ContentMain(props) {
   const { projectDetail } = props;
+  const dispatch = useDispatch();
 
   // lstTask là tên do BE - API trả về đặt
 
@@ -23,6 +26,12 @@ export default function ContentMain(props) {
                   data-toggle="modal"
                   data-target="#infoModal"
                   style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    dispatch({
+                      type: GET_TASK_DETAIL_SAGA,
+                      taskId: task.taskId,
+                    });
+                  }}
                 >
                   <p className="font-weight-300">{task.taskName}</p>
                   <div className="block" style={{ display: 'flex' }}>

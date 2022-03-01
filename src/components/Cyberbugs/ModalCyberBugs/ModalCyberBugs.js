@@ -183,6 +183,7 @@ export default function ModalCyberBugs(props) {
                   <div className="assignees">
                     <h6>ASSIGNEES</h6>
                     <div style={{ display: 'flex' }}>
+                      {/* ASSIGNEES đang bị tràn - ko nên set cứng flex-basis và đặt thêm flex-wrap */}
                       {taskDetailModal.assigness.map((user, index) => {
                         return (
                           <div
