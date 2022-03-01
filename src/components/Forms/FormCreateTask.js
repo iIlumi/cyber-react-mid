@@ -9,6 +9,7 @@ import { GET_ALL_STATUS_SAGA } from '../../redux/constants/Cyberbugs/StatusConst
 
 import { withFormik } from 'formik';
 import * as Yup from 'yup';
+import { GET_USER_BY_PROJECT_ID_SAGA } from '../../redux/constants/Cyberbugs/UserConstants';
 
 const { Option } = Select;
 const children = [];
@@ -33,14 +34,8 @@ function FormCreateTask(props) {
   // allUser có thể dùng là state nội bộ hoặc đẩy lên redux cũng được
 
   // const dispatchHook = useDispatch();
-  const {
-    arrProject,
-    arrTaskType,
-    arrPriority,
-    arrStatus,
-    userSearch,
-    dispatch,
-  } = props;
+  const { arrProject, arrTaskType, arrPriority, arrStatus, arrUser, dispatch } =
+    props;
   // ===
   // Do connect với formik ta dẵ dùng connect nên ko cần dùng hooks nữa
 
@@ -62,7 +57,7 @@ function FormCreateTask(props) {
   } = props;
 
   //Hàm biến đổi options cho thẻ select
-  const userOptions = userSearch.map((item, index) => {
+  const userOptions = arrUser.map((item, index) => {
     return { value: item.userId, label: item.name };
   });
 
@@ -96,7 +91,19 @@ function FormCreateTask(props) {
         <select
           name="projectId"
           className="form-control"
-          onChange={handleChange}
+          onChange={(e) => {
+            //dispatch giá trị làm thay đổi arrUser
+            let { value } = e.target;
+            // Có thể dispatch tại thời điểm load Formik kèm reinitialise luôn
+            // Tuy nhiên chú ý vấn đề tối ưu call API, ts, ESLint...
+            dispatch({
+              type: GET_USER_BY_PROJECT_ID_SAGA,
+              idProject: value,
+            });
+            //Cập nhật giá trị cho project Id
+            // setFieldValue('projectId', e.target.value);
+            handleChange(e);
+          }}
         >
           {arrProject.map((project, index) => {
             return (
@@ -199,6 +206,7 @@ function FormCreateTask(props) {
               // defaultValue={['a10', 'c12']}
               // onChange này là của antd, ko phải của React component thường
               onChange={(values) => {
+                //set lại giá trị cho lstUserAsign
                 setFieldValue('listUserAsign', values);
               }}
               onSelect={(value) => {
@@ -328,6 +336,17 @@ const frmCreateTask = withFormik({
     // Các name của input trongform nên cố đặt giống data BE trả về
     const { arrProject, arrTaskType, arrPriority, arrStatus } = props;
 
+    // Có thể dispatch tại đây để xử lý trường hợp vừa load form lên
+    // Tuy nhiên sẽ bị ESLint warn vì dispatch bên trong lại kèm re-initialize có thể gây loop
+    // Hoặc đây get user của 1 project vào saga khi lấy thông tin của 1 project luôn
+
+    // if (arrProject?.length > 0) {
+    //   props.dispatch({
+    //     type: GET_USER_BY_PROJECT_ID_SAGA,
+    //     idProject: arrProject[0]?.id,
+    //   });
+    // }
+
     return {
       taskName: '',
       description: '',
@@ -357,7 +376,7 @@ const mapStateToProps = (state) => {
     arrTaskType: state.TaskTypeReducer.arrTaskType,
     arrPriority: state.PriorityReducer.arrPriority,
     arrStatus: state.StatusReducer.arrStatus,
-    userSearch: state.UserLoginCyberBugsReducer.userSearch,
+    arrUser: state.UserLoginCyberBugsReducer.arrUser,
   };
 };
 

@@ -8,6 +8,7 @@ import {
   GET_ALL_PROJECT,
   GET_ALL_PROJECT_SAGA,
 } from '../../constants/Cyberbugs/ProjectCyberBugsConstants';
+import { GET_USER_BY_PROJECT_ID_SAGA } from '../../constants/Cyberbugs/UserConstants';
 
 function* createProjectSaga(action) {
   console.log('actionCreateProject', action);
@@ -214,6 +215,14 @@ function* getProjectAllSaga(action) {
     yield put({
       type: GET_ALL_PROJECT,
       arrProject: data.content,
+    });
+
+    // Tuy nhiên chỉ là fix tình thế vì ko đúng logic lắm
+    // Hoặc là khi form vừa bật lên - hook useEffect sẽ lấy cho lần đầu
+    // nhưng khi đó setup đồng bộ sẽ khó khăn
+    yield put({
+      type: GET_USER_BY_PROJECT_ID_SAGA,
+      idProject: data.content[0].id,
     });
   } catch (err) {
     console.log('404 not found !');

@@ -34,6 +34,7 @@ export function* rootSaga() {
     CybugsUser.theoDoiGetUser(),
     CybugsUser.theoDoiAddUserProject(),
     CybugsUser.theoDoiRemoveUserProject(),
+    CybugsUser.theoDoiGetUserByProjectIdSaga(),
 
     CybugsPrjCategories.theoDoigetAllProjectCategory(),
 

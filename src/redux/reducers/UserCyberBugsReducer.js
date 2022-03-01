@@ -1,4 +1,5 @@
 import { LOGIN_SUCCESS } from '../constants/Cyberbugs/Cyberbugs';
+import { GET_USER_BY_PROJECT_ID } from '../constants/Cyberbugs/UserConstants';
 
 const { USER_LOGIN } = require('../../util/constants/settingSystem');
 
@@ -15,9 +16,8 @@ if (localStorage.getItem(USER_LOGIN)) {
 
 const stateDefault = {
   userLoginInfo: userLoginInfo,
-  userSearch: [],
-  // arrUser:[]//Array user cho thẻ select create task
-  // Tuy nhiên ta tận dụng lại userSearch chung logic luôn
+  userSearch: [], //Array user để add vào project tổng
+  arrUser: [], //Array user cho thẻ select create task trong 1 prj
 };
 
 export const UserLoginCyberBugsReducer = (state = stateDefault, action) => {
@@ -31,6 +31,10 @@ export const UserLoginCyberBugsReducer = (state = stateDefault, action) => {
       state.userSearch = action.lstUserSearch;
       console.log('stateUser', state);
       return { ...state };
+    }
+
+    case GET_USER_BY_PROJECT_ID: {
+      return { ...state, arrUser: action.arrUser };
     }
 
     default:
