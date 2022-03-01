@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { taskService } from '../../../services/TaskService';
 import { STATUS_CODE } from '../../../util/constants/settingSystem';
 import { notifiFunction } from '../../../util/Notification/notificationCyberbugs';
@@ -135,8 +135,51 @@ export function* handelChangePostApi(action) {
     default:
       break;
   }
+
+  //Save qua api updateTaskSaga
+  //Lây dữ liệu từ state.taskDetailModal
+  let { taskDetailModal } = yield select((state) => state.TaskReducer);
+  console.log(
+    '🚀 ~ file: TaskSaga.js ~ line 142 ~ taskDetailModal',
+    taskDetailModal
+  );
+  // console.log('taskDetailModal sau khi thay đổi', taskDetailModal);
+
+  //Biến đổi dữ liệu state.taskDetailModal thành dữ liệu api cần
+
+  const taskUpdateApi = {
+    ...taskDetailModal,
+    listUserAsign: taskDetailModal.assigness?.map((user) => {
+      return user.id;
+    }),
+  };
+
+  // Đẩy dữ liệu lên API cho BE
+  try {
+    const { status } = yield call(() => taskService.updateTask(taskUpdateApi));
+
+    if (status === STATUS_CODE.SUCCESS) {
+      // update project detail tổng
+      yield put({
+        type: 'GET_PROJECT_DETAIL',
+        projectId: taskUpdateApi.projectId,
+      });
+
+      // Update task detail trên HOC-Modal
+      yield put({
+        type: GET_TASK_DETAIL_SAGA,
+        taskId: taskUpdateApi.taskId,
+      });
+    }
+  } catch (err) {
+    console.log(err.response?.data);
+    console.log(err);
+  }
 }
 
 export function* theoDoiHandleChangePostApi() {
   yield takeLatest(HANDLE_CHANGE_POST_API_SAGA, handelChangePostApi);
 }
+
+// BUG 
+// ko đủ quyền truy cập, dispatch BE fail nhưng redux vẫn ăn !!!
