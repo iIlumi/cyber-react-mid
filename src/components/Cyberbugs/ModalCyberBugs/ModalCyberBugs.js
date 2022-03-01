@@ -7,6 +7,7 @@ import {
   CHANGE_TASK_MODAL,
   ADD_ASSIGNESS,
   REMOVE_USER_ASSIGN,
+  HANDLE_CHANGE_POST_API_SAGA,
 } from '../../../redux/constants/Cyberbugs/TaskConstants';
 import { GET_ALL_TASK_TYPE_SAGA } from '../../../redux/constants/Cyberbugs/TaskTypeConstants';
 // import { UPDATE_STATUS_TASK_SAGA } from '../../../redux/constants/Cyberbugs/TaskConstants';
@@ -39,7 +40,8 @@ export default function ModalCyberBugs(props) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     dispatch({
-      type: CHANGE_TASK_MODAL,
+      type: HANDLE_CHANGE_POST_API_SAGA,
+      actionType: CHANGE_TASK_MODAL,
       name,
       value,
     });
@@ -131,7 +133,8 @@ export default function ModalCyberBugs(props) {
                             className="btn btn-primary m-2"
                             onClick={() => {
                               dispatch({
-                                type: CHANGE_TASK_MODAL,
+                                type: HANDLE_CHANGE_POST_API_SAGA,
+                                actionType: CHANGE_TASK_MODAL,
                                 name: 'description',
                                 value: content,
                               });
@@ -304,7 +307,7 @@ export default function ModalCyberBugs(props) {
                     <h6>ASSIGNEES</h6>
                     <div className="row">
                       {/* ASSIGNEES đang bị tràn - ko nên set cứng flex-basis và đặt thêm flex-wrap */}
-                      {taskDetailModal.assigness.map((user, index) => {
+                      {taskDetailModal.assigness?.map((user, index) => {
                         return (
                           <div className="col-6  mt-2 mb-2" key={index}>
                             <div style={{ display: 'flex' }} className="item">
@@ -318,7 +321,8 @@ export default function ModalCyberBugs(props) {
                                   style={{ marginLeft: 5, cursor: 'pointer' }}
                                   onClick={() => {
                                     dispatch({
-                                      type: REMOVE_USER_ASSIGN,
+                                      type: HANDLE_CHANGE_POST_API_SAGA,
+                                      actionType: REMOVE_USER_ASSIGN,
                                       userId: user.id,
                                     });
                                   }}
@@ -392,7 +396,8 @@ export default function ModalCyberBugs(props) {
                             //   userSelected.userId
                             // );
                             dispatch({
-                              type: ADD_ASSIGNESS,
+                              type: HANDLE_CHANGE_POST_API_SAGA,
+                              actionType: ADD_ASSIGNESS,
                               userSelected: {
                                 ...userSelected,
                                 id: userSelected.userId,

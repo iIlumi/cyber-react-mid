@@ -7,6 +7,10 @@ import {
   GET_TASK_DETAIL_SAGA,
   GET_TASK_DETAIL,
   UPDATE_STATUS_TASK_SAGA,
+  HANDLE_CHANGE_POST_API_SAGA,
+  CHANGE_TASK_MODAL,
+  ADD_ASSIGNESS,
+  REMOVE_USER_ASSIGN,
 } from '../../constants/Cyberbugs/TaskConstants';
 
 function* createTaskSaga(action) {
@@ -94,4 +98,45 @@ function* updateTaskStatusSaga(action) {
 
 export function* theoDoiUpdateTaskStatusSaga() {
   yield takeLatest(UPDATE_STATUS_TASK_SAGA, updateTaskStatusSaga);
+}
+
+export function* handelChangePostApi(action) {
+  // console.log('abc', action)
+  //Gọi action làm thay đổi taskDetail modal
+  const { type, actionType, ...action_payload } = action;
+  action_payload.type = actionType;
+
+  console.log(
+    '🚀 ~ file: TaskSaga.js ~ line 108 ~ action_payload',
+    action_payload
+  );
+
+  switch (actionType) {
+    case CHANGE_TASK_MODAL:
+      {
+        const { value, name } = action;
+
+        yield put({
+          type: CHANGE_TASK_MODAL,
+          name,
+          value,
+        });
+      }
+      break;
+
+    case ADD_ASSIGNESS:
+      yield put(action_payload);
+      break;
+
+    case REMOVE_USER_ASSIGN:
+      yield put(action_payload);
+      break;
+
+    default:
+      break;
+  }
+}
+
+export function* theoDoiHandleChangePostApi() {
+  yield takeLatest(HANDLE_CHANGE_POST_API_SAGA, handelChangePostApi);
 }
