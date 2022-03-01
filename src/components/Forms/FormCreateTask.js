@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { Select, Slider } from 'antd';
-import { useSelector, useDispatch, connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { GET_ALL_PROJECT_SAGA } from '../../redux/constants/Cyberbugs/ProjectCyberBugsConstants';
 import { GET_ALL_TASK_TYPE_SAGA } from '../../redux/constants/Cyberbugs/TaskTypeConstants';
 import { GET_ALL_PRIORITY_SAGA } from '../../redux/constants/Cyberbugs/PriorityConstants';
@@ -22,17 +22,27 @@ function FormCreateTask(props) {
   // const { arrTaskType } = useSelector((state) => state.TaskTypeReducer);
   // const { arrPriority } = useSelector((state) => state.PriorityReducer);
 
-  const {
-    ProjectCyberBugsReducer: { arrProject },
-    TaskTypeReducer: { arrTaskType },
-    PriorityReducer: { arrPriority },
-    UserLoginCyberBugsReducer: { userSearch },
-    StatusReducer: { arrStatus },
-  } = useSelector((state) => state);
+  // const {
+  //   ProjectCyberBugsReducer: { arrProject },
+  //   TaskTypeReducer: { arrTaskType },
+  //   PriorityReducer: { arrPriority },
+  //   UserLoginCyberBugsReducer: { userSearch },
+  //   StatusReducer: { arrStatus },
+  // } = useSelector((state) => state);
 
   // allUser có thể dùng là state nội bộ hoặc đẩy lên redux cũng được
 
-  const dispatch = useDispatch();
+  // const dispatchHook = useDispatch();
+  const {
+    arrProject,
+    arrTaskType,
+    arrPriority,
+    arrStatus,
+    userSearch,
+    dispatch,
+  } = props;
+  // ===
+  // Do connect với formik ta dẵ dùng connect nên ko cần dùng hooks nữa
 
   const [timeTracking, setTimetracking] = useState({
     timeTrackingSpent: 0,
@@ -310,21 +320,24 @@ function FormCreateTask(props) {
 }
 
 const frmCreateTask = withFormik({
-  // enableReinitialize: true,
+  // Phải enable để lấy giá trị default từ redux
+  // Nếu ko sẽ bị đè các giá trị ko có trong setup
+  enableReinitialize: true,
   mapPropsToValues: (props) => {
     // Trùng với name của những input đã tạo rồi
     // Các name của input trongform nên cố đặt giống data BE trả về
+    const { arrProject, arrTaskType, arrPriority, arrStatus } = props;
 
     return {
       taskName: '',
       description: '',
-      statusId: 1,
+      statusId: arrStatus[0]?.statusId,
       originalEstimate: 0,
       timeTrackingSpent: 0,
       timeTrackingRemaining: 0,
-      projectId: 0,
-      typeId: 0,
-      priorityId: 0,
+      projectId: arrProject[0]?.id,
+      typeId: arrTaskType[0]?.id,
+      priorityId: arrPriority[0]?.priorityId,
       listUserAsign: [],
     };
   },
@@ -338,4 +351,14 @@ const frmCreateTask = withFormik({
   },
 })(FormCreateTask);
 
-export default connect()(frmCreateTask);
+const mapStateToProps = (state) => {
+  return {
+    arrProject: state.ProjectCyberBugsReducer.arrProject,
+    arrTaskType: state.TaskTypeReducer.arrTaskType,
+    arrPriority: state.PriorityReducer.arrPriority,
+    arrStatus: state.StatusReducer.arrStatus,
+    userSearch: state.UserLoginCyberBugsReducer.userSearch,
+  };
+};
+
+export default connect(mapStateToProps)(frmCreateTask);
