@@ -1,6 +1,8 @@
 import {
   CHANGE_TASK_MODAL,
   GET_TASK_DETAIL,
+  ADD_ASSIGNESS,
+  REMOVE_USER_ASSIGN,
 } from '../constants/Cyberbugs/TaskConstants';
 
 const initialState = {
@@ -65,6 +67,23 @@ export const TaskReducer = (state = initialState, action) => {
       };
     }
 
+    case ADD_ASSIGNESS: {
+      state.taskDetailModal.assigness = [
+        ...state.taskDetailModal.assigness,
+        action.userSelected,
+      ];
+      // console.log('state',state)
+      return { ...state };
+    }
+
+    case REMOVE_USER_ASSIGN: {
+      state.taskDetailModal.assigness = [
+        ...state.taskDetailModal.assigness.filter(
+          (us) => us.id !== action.userId
+        ),
+      ];
+      return { ...state };
+    }
     default:
       return state;
   }

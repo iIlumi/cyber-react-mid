@@ -7,6 +7,9 @@ import { CHANGE_TASK_MODAL } from '../../../redux/constants/Cyberbugs/TaskConsta
 import { GET_ALL_TASK_TYPE_SAGA } from '../../../redux/constants/Cyberbugs/TaskTypeConstants';
 // import { UPDATE_STATUS_TASK_SAGA } from '../../../redux/constants/Cyberbugs/TaskConstants';
 import { Editor } from '@tinymce/tinymce-react';
+import { Select } from 'antd';
+
+const { Option } = Select;
 
 export default function ModalCyberBugs(props) {
   const {
@@ -14,6 +17,7 @@ export default function ModalCyberBugs(props) {
     StatusReducer: { arrStatus },
     PriorityReducer: { arrPriority },
     TaskTypeReducer: { arrTaskType },
+    ProjectReducer: { projectDetail },
   } = useSelector((state) => state);
 
   const [visibleEditor, setVisibleEditor] = useState(false);
@@ -294,31 +298,67 @@ export default function ModalCyberBugs(props) {
                   </div>
                   <div className="assignees">
                     <h6>ASSIGNEES</h6>
-                    <div style={{ display: 'flex' }}>
+                    <div className="row">
                       {/* ASSIGNEES đang bị tràn - ko nên set cứng flex-basis và đặt thêm flex-wrap */}
                       {taskDetailModal.assigness.map((user, index) => {
                         return (
-                          <div
-                            key={index}
-                            style={{ display: 'flex' }}
-                            className="item"
-                          >
-                            <div className="avatar">
-                              <img src={user.avatar} alt={user.avatar} />
+                          <div className="col-6  mt-2 mb-2" key={index}>
+                            <div style={{ display: 'flex' }} className="item">
+                              <div className="avatar">
+                                <img src={user.avatar} alt={user.avatar} />
+                              </div>
+                              <p className="name mt-1 ml-1">
+                                {user.name}
+                                <i
+                                  className="fa fa-times"
+                                  style={{ marginLeft: 5, cursor: 'pointer' }}
+                                  onClick={() => {}}
+                                />
+                              </p>
                             </div>
-                            <p className="name mt-1 ml-1">
-                              {user.name}
-                              <i
-                                className="fa fa-times"
-                                style={{ marginLeft: 5 }}
-                              />
-                            </p>
                           </div>
                         );
                       })}
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <i className="fa fa-plus" style={{ marginRight: 5 }} />
-                        <span>Add more</span>
+                      <div className="col-6  mt-2 mb-2">
+                        <div className="col-12 border border-primary mb-2">
+                          <i
+                            className="fa fa-plus"
+                            style={{ marginRight: 5 }}
+                          />
+                          <span>Add more</span>
+                          <select
+                            name="lstUser"
+                            className="form-control"
+                            onChange={(e) => {}}
+                          >
+                            {projectDetail.members?.map((mem, index) => {
+                              return (
+                                <option value={mem.userId} key={index}>
+                                  {mem.name}
+                                </option>
+                              );
+                            })}
+                          </select>
+                        </div>
+
+                        <Select
+                          mode="multiple"
+                          size="default"
+                          options={[
+                            { value: 'a12', label: 'b12' },
+                            { value: 'a13', label: 'b13' },
+                            { value: 'a14', label: 'b14' },
+                          ]}
+                          optionFilterProp="label"
+                          style={{ width: '100%' }}
+                          onSelect={(value) => {
+                            console.log(
+                              '🚀 ~ file: ModalCyberBugs.js ~ line 338 ~ value',
+                              value
+                            );
+                          }}
+                          placeholder="Please select"
+                        />
                       </div>
                     </div>
                   </div>
