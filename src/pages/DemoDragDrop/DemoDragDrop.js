@@ -1,4 +1,6 @@
 import React, { useRef, useState } from 'react';
+import style from './DemoDragDrop.module.css';
+// Có thể dùng style inline cũng ok
 
 const defaultValue = [
   { id: 1, taskName: 'Task 1' },
@@ -51,7 +53,10 @@ export default function DemoDragDrop(props) {
     // Thực chất ở đây chỉ sway [a,b] = [b,a]
     // ko reorder như kiểu chèn vô nên có nhiều cách giải quyết
     // Tuy nhiên gán temp là cách phổ thông nhất
-    
+
+    // Chỉ demo phương pháp, thực chất khi kéo bị swap liên tục và save ngay
+    // Sẽ sai logic rất nặng, sort lung tung
+
     //Biến chứa giá trị thằng đang kéo
     let temp = taskListUpdate[indexDragTag];
     //Lấy giá trị tại vi trí đang kéo gán = thằng kéo qua
@@ -59,6 +64,10 @@ export default function DemoDragDrop(props) {
     //Lấy thằng kéo qua gán = đang keo
     taskListUpdate[indexDragEnter] = temp;
 
+    console.log(
+      '🚀 ~ file: DemoDragDrop.js ~ line 73 ~ taskListUpdate',
+      taskListUpdate
+    );
     setTaskList(taskListUpdate);
   };
 
@@ -68,6 +77,11 @@ export default function DemoDragDrop(props) {
 
   const handleDragEnd = (e) => {
     // console.log('dragEnd', e.target);
+    // Phải clear ref vì đang dùng ref đó để compare id Class
+    // Clear đi mới reset xóa class opacity 0 được
+    tagDrag.current = {};
+    // console.log('🚀 ~ file: DemoDragDrop.js ~ line 83 ~ taskList', taskList);
+    setTaskList([...taskList]);
   };
   const handleDrop = (e) => {
     console.log('drop', e.target);
@@ -83,7 +97,9 @@ export default function DemoDragDrop(props) {
             return (
               <div
                 key={index}
-                className="bg-success text-white m-1 p-3"
+                className={`bg-success text-white m-1 p-3 ${
+                  task.id === tagDrag.current.id ? style.dragTag : ''
+                }`}
                 draggable="true"
                 onDragStart={(e) => {
                   handleDragStart(e, task, index);
@@ -91,7 +107,9 @@ export default function DemoDragDrop(props) {
                 onDragEnter={(e) => {
                   handleDragEnter(e, task, index);
                 }}
-
+                onDragEnd={(e) => {
+                  handleDragEnd(e);
+                }}
                 // onDragEnter={handleDragOver}
                 // onDragEnd={(e) => {
                 //   handleDragEnd(e);
