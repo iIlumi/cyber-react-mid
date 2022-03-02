@@ -11,6 +11,7 @@ import CreateProject from './pages/CyberBugs/CreateProject/CreateProject';
 import IndexCyberBugs from './pages/CyberBugs/indexCyberBugs';
 import LoginCyberBugs from './pages/CyberBugs/LoginCyberBugs/LoginCyberBugs';
 import ProjectManagement from './pages/CyberBugs/ProjectManagement/ProjectManagement';
+import DemoDragDrop from './pages/DemoDragDrop/DemoDragDrop';
 import DemoHOCModal from './pages/DemoHOCModal/DemoHOCModal';
 import Detail from './pages/Detail/Detail';
 import Home from './pages/Home/Home';
@@ -95,6 +96,8 @@ function App() {
           path="/demohocmodal"
           element={<HomeTemplate ele={DemoHOCModal} />}
         />
+
+        <Route path="/dragdrop" element={<HomeTemplate ele={DemoDragDrop} />} />
 
         <Route
           path="/cyberbugs"
