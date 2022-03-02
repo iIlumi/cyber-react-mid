@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 const defaultValue = [
   { id: 1, taskName: 'Task 1' },
@@ -20,11 +20,46 @@ const defaultValue = [
 
 export default function DemoDragDrop(props) {
   const [taskList, setTaskList] = useState(defaultValue);
+  const tagDrag = useRef({});
 
   const handleDragStart = (e, task, index) => {
-    // console.log('tag',e.target);
-    // console.log('task',task);
+    // Lấy thông tin thẻ
+    console.log('tag', e.target);
+    console.log('task', task);
     // console.log('index',index);
+
+    //Lưu lại giá trị của task đang drag
+    // ko dùng state lưu lại giá trị này sẽ gây lỗi ko kiểm soát
+    tagDrag.current = task;
+  };
+
+  const handleDragEnter = (e, taskDragEnter, index) => {
+    // console.log('dragEnterTag',e.target)
+    // console.log('targertOver',task)
+    // console.log('index',index)
+
+    let taskListUpdate = [...taskList];
+    //Láy ra index thằng đang kéo
+    let indexDragTag = taskListUpdate.findIndex(
+      (task) => task.id === tagDrag.current.id
+    );
+    //Lấy ra index thằng bị kéo qua
+    let indexDragEnter = taskListUpdate.findIndex(
+      (task) => task.id === taskDragEnter.id
+    );
+
+    // Thực chất ở đây chỉ sway [a,b] = [b,a]
+    // ko reorder như kiểu chèn vô nên có nhiều cách giải quyết
+    // Tuy nhiên gán temp là cách phổ thông nhất
+    
+    //Biến chứa giá trị thằng đang kéo
+    let temp = taskListUpdate[indexDragTag];
+    //Lấy giá trị tại vi trí đang kéo gán = thằng kéo qua
+    taskListUpdate[indexDragTag] = taskListUpdate[indexDragEnter];
+    //Lấy thằng kéo qua gán = đang keo
+    taskListUpdate[indexDragEnter] = temp;
+
+    setTaskList(taskListUpdate);
   };
 
   const handleDragOver = (e) => {
@@ -53,10 +88,14 @@ export default function DemoDragDrop(props) {
                 onDragStart={(e) => {
                   handleDragStart(e, task, index);
                 }}
-                onDragEnter={handleDragOver}
-                onDragEnd={(e) => {
-                  handleDragEnd(e);
+                onDragEnter={(e) => {
+                  handleDragEnter(e, task, index);
                 }}
+
+                // onDragEnter={handleDragOver}
+                // onDragEnd={(e) => {
+                //   handleDragEnd(e);
+                // }}
               >
                 {task.taskName}
               </div>
