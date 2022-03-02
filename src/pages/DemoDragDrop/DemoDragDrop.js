@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import style from './DemoDragDrop.module.css';
 // Có thể dùng style inline cũng ok
+import { useSpring, animated } from 'react-spring';
 
 const defaultValue = [
   { id: 1, taskName: 'Task 1' },
@@ -23,6 +24,15 @@ const defaultValue = [
 export default function DemoDragDrop(props) {
   const [taskList, setTaskList] = useState(defaultValue);
   const tagDrag = useRef({});
+  const tagDragEnter = useRef({});
+
+  //Animation
+  const [propsSpring, api] = useSpring(() => ({
+    from: { bottom: -25 },
+    to: { bottom: 0 },
+    config: { duration: 1000 },
+    reset: true,
+  }));
 
   const handleDragStart = (e, task, index) => {
     // Lấy thông tin thẻ
@@ -39,6 +49,10 @@ export default function DemoDragDrop(props) {
     // console.log('dragEnterTag',e.target)
     // console.log('targertOver',task)
     // console.log('index',index)
+
+    //Lưu lại giá trị của task được kéo ngang qua
+    api({ bottom: 0 });
+    tagDragEnter.current = { ...taskDragEnter };
 
     let taskListUpdate = [...taskList];
     //Láy ra index thằng đang kéo
@@ -64,39 +78,77 @@ export default function DemoDragDrop(props) {
     //Lấy thằng kéo qua gán = đang keo
     taskListUpdate[indexDragEnter] = temp;
 
-    console.log(
-      '🚀 ~ file: DemoDragDrop.js ~ line 73 ~ taskListUpdate',
-      taskListUpdate
-    );
+    // console.log(
+    //   '🚀 ~ file: DemoDragDrop.js ~ line 73 ~ taskListUpdate',
+    //   taskListUpdate
+    // );
     setTaskList(taskListUpdate);
   };
 
-  const handleDragOver = (e) => {
-    // console.log('targertOver',e.target)
-  };
+  // const handleDragOver = (e) => {
+  // console.log('targertOver',e.target)
+  // };
 
   const handleDragEnd = (e) => {
     // console.log('dragEnd', e.target);
     // Phải clear ref vì đang dùng ref đó để compare id Class
     // Clear đi mới reset xóa class opacity 0 được
-    tagDrag.current = {};
-    // console.log('🚀 ~ file: DemoDragDrop.js ~ line 83 ~ taskList', taskList);
-    setTaskList([...taskList]);
+    // Đưa vào trong div cha bao toàn bộ web - container
+    // Xử lý tình hướng vì animated div xung đột với react state render
+    // tagDrag.current = {};
+    // setTaskList([...taskList]);
   };
   const handleDrop = (e) => {
     console.log('drop', e.target);
   };
 
   return (
-    <div className="container">
+    <div
+      className="container"
+      onDragOver={(e) => {
+        // Vì xung đột của react-render với dragable và animation nên tạm fix vậy
+        e.stopPropagation();
+        e.preventDefault();
+      }}
+      onDrop={(e) => {
+        //
+        tagDrag.current = {};
+        setTaskList([...taskList]);
+      }}
+    >
       <div className="text-center display-4">Task list</div>
       <div className="row">
         <div className="col-2"></div>
         <div className="bg-dark p-5 col-4">
           {taskList.map((task, index) => {
-            return (
+            return task.id === tagDragEnter.current.id ? (
+              <animated.div
+                style={{
+                  position: 'relative',
+                  bottom: propsSpring.bottom.to(
+                    (numBottom) => `${numBottom}px`
+                  ),
+                }}
+                key={task.id}
+                className={`animaa bg-success text-white m-1 p-3 ${
+                  task.id === tagDrag.current.id ? style.dragTag : ''
+                }`}
+                draggable="true"
+                onDragStart={(e) => {
+                  handleDragStart(e, task, index);
+                }}
+                onDragEnter={(e) => {
+                  handleDragEnter(e, task, index);
+                }}
+                onDragEnd={(e) => {
+                  handleDragEnd(e);
+                }}
+              >
+                {task.taskName}
+              </animated.div>
+            ) : (
               <div
-                key={index}
+                key={task.id}
                 className={`bg-success text-white m-1 p-3 ${
                   task.id === tagDrag.current.id ? style.dragTag : ''
                 }`}
