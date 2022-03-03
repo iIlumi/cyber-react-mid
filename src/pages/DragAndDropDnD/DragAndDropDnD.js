@@ -30,11 +30,59 @@ export default function DragAndDropDnD(props) {
     },
   });
 
+  const handleDragEnd = (result) => {
+    console.log('🚀 ~ file: DragAndDropDnD.js ~ line 34 ~ result', result);
+    let { destination, source } = result;
+
+    if (!destination) {
+      return;
+    }
+
+    if (
+      destination.index === source.index &&
+      destination.droppableId === source.droppableId
+    ) {
+      return;
+    }
+
+    // ===================
+    // Giải thuật xử lý
+    // ===================
+
+    //tạo ra 1 tag drag
+    let itemCopy = { ...state[source.droppableId].items[source.index] };
+    console.log('🚀 ~ file: DragAndDropDnD.js ~ line 52 ~ itemCopy', itemCopy);
+
+    // ------
+    //Droppable bắt đầu kéo
+    let index = state[source.droppableId].items.findIndex(
+      (item) => item.id == itemCopy.id
+    );
+    //Droppable thả vào
+    let dropDestination = state[destination.droppableId].items;
+    // ------
+    // ------
+    // Xóa item drag ra
+    state[source.droppableId].items.splice(index, 1);
+    // Chèn item copy từ drag
+    dropDestination.splice(destination.index, 0, itemCopy);
+
+    // Giải thuật này khác demo drag-drop vì là xóa -> chèn vào
+    // ko phải swap a,b = b,a
+    // cẩn thận vấn đề tham chiếu của obj
+    // ===================
+    setState(state);
+    // Đúng ra giải thuật phải đưa vào trong setState
+    // setState(prevState => {
+    //     return {...prevState}
+    // });
+  };
+
   return (
     <div className="container">
       <h3 className="text-center display-4">Demo DraggAndDropp DND</h3>
 
-      <DragDropContext>
+      <DragDropContext onDragEnd={handleDragEnd}>
         <div className="row">
           {_.map(state, (statusTask, index) => {
             return (
