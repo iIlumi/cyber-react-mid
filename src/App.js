@@ -23,6 +23,7 @@ import ToDoListRFC from './pages/ToDoList/ToDoListRFC';
 import { CyberbugsTemplate } from './templates/HomeTemplate/CyberbugsTemplate';
 import { HomeTemplate } from './templates/HomeTemplate/HomeTemplate';
 import { UserLoginTemplate } from './templates/HomeTemplate/UserLoginTemplate';
+import DragAndDropDnD from './pages/DragAndDropDnD/DragAndDropDnD';
 
 function App() {
   const history = useNavigate();
@@ -77,6 +78,10 @@ function App() {
         />
         <Route path="/detail/:id" element={<HomeTemplate ele={Detail} />} />
         <Route path="/profile" element={<HomeTemplate ele={Profile} />} />
+        <Route
+          path="/demodragdropdnd"
+          element={<HomeTemplate ele={DragAndDropDnD} />}
+        />
 
         <Route path="/todolistrcc" element={<HomeTemplate ele={ToDoList} />} />
         <Route

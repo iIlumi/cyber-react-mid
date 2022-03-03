@@ -82,6 +82,15 @@ export default function Header() {
               Demo HOC
             </NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink
+              style={({ isActive }) => activeLinkStyle(isActive)}
+              className="nav-link"
+              to="/demodragdropdnd"
+            >
+              Drag_Dnd
+            </NavLink>
+          </li>
           <li className="nav-item dropdown">
             <span
               className="nav-link dropdown-toggle"
