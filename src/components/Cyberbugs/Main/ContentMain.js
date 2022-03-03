@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { GET_TASK_DETAIL_SAGA } from '../../../redux/constants/Cyberbugs/TaskConstants';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 export default function ContentMain(props) {
   const { projectDetail } = props;
@@ -9,64 +10,93 @@ export default function ContentMain(props) {
   // lstTask là tên do BE - API trả về đặt
 
   const renderCardTaskList = () => {
-    return projectDetail.lstTask?.map((taskListDetail, index) => {
-      return (
-        <div
-          key={index}
-          className="card pb-2"
-          style={{ width: '17rem', height: 'auto' }}
-        >
-          <div className="card-header">{taskListDetail.statusName}</div>
-          <ul className="list-group list-group-flush">
-            {taskListDetail.lstTaskDeTail.map((task, index) => {
-              return (
-                <li
-                  key={index}
-                  className="list-group-item"
-                  data-toggle="modal"
-                  data-target="#infoModal"
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => {
-                    dispatch({
-                      type: GET_TASK_DETAIL_SAGA,
-                      taskId: task.taskId,
-                    });
-                  }}
-                >
-                  <p className="font-weight-300">{task.taskName}</p>
-                  <div className="block" style={{ display: 'flex' }}>
-                    <div className="block-left">
-                      <p className="text-danger">
-                        {task.priorityTask.priority}
-                        {/* <i className="fa fa-bookmark" />
-                        <i className="fa fa-arrow-up" /> */}
-                      </p>
+    return (
+      <DragDropContext>
+        {projectDetail.lstTask?.map((taskListDetail, index) => {
+          return (
+            <Droppable>
+              {(provided) => {
+                return (
+                  <div
+                    key={index}
+                    className="card pb-2"
+                    style={{ width: '17rem', height: 'auto' }}
+                  >
+                    <div className="card-header">
+                      {taskListDetail.statusName}
                     </div>
-                    <div className="block-right">
-                      <div className="avatar-group" style={{ display: 'flex' }}>
-                        {task.assigness.map((mem, index) => {
-                          return (
-                            <div className="avatar" key={index}>
-                              <img src={mem.avatar} alt={mem.avatar} />
-                            </div>
-                          );
-                        })}
-                        {/* <div className="avatar">
-                          <img
-                            src={require('../../../assets/img/download (1).jfif')}
-                            alt="1"
-                          />
-                        </div> */}
-                      </div>
-                    </div>
+                    <ul className="list-group list-group-flush">
+                      {taskListDetail.lstTaskDeTail.map((task, index) => {
+                        return (
+                          <Draggable>
+                            {(provided) => {
+                              return (
+                                <li
+                                  key={index}
+                                  className="list-group-item"
+                                  data-toggle="modal"
+                                  data-target="#infoModal"
+                                  style={{ cursor: 'pointer' }}
+                                  onClick={() => {
+                                    dispatch({
+                                      type: GET_TASK_DETAIL_SAGA,
+                                      taskId: task.taskId,
+                                    });
+                                  }}
+                                >
+                                  <p className="font-weight-300">
+                                    {task.taskName}
+                                  </p>
+                                  <div
+                                    className="block"
+                                    style={{ display: 'flex' }}
+                                  >
+                                    <div className="block-left">
+                                      <p className="text-danger">
+                                        {task.priorityTask.priority}
+                                        {/* <i className="fa fa-bookmark" />
+                                            <i className="fa fa-arrow-up" /> */}
+                                      </p>
+                                    </div>
+                                    <div className="block-right">
+                                      <div
+                                        className="avatar-group"
+                                        style={{ display: 'flex' }}
+                                      >
+                                        {task.assigness.map((mem, index) => {
+                                          return (
+                                            <div className="avatar" key={index}>
+                                              <img
+                                                src={mem.avatar}
+                                                alt={mem.avatar}
+                                              />
+                                            </div>
+                                          );
+                                        })}
+                                        {/* <div className="avatar">
+                                              <img
+                                                src={require('../../../assets/img/download (1).jfif')}
+                                                alt="1"
+                                              />
+                                            </div> */}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </li>
+                              );
+                            }}
+                          </Draggable>
+                        );
+                      })}
+                    </ul>
                   </div>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      );
-    });
+                );
+              }}
+            </Droppable>
+          );
+        })}
+      </DragDropContext>
+    );
   };
 
   return (
