@@ -1,6 +1,9 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { GET_TASK_DETAIL_SAGA } from '../../../redux/constants/Cyberbugs/TaskConstants';
+import {
+  GET_TASK_DETAIL_SAGA,
+  UPDATE_STATUS_TASK_SAGA,
+} from '../../../redux/constants/Cyberbugs/TaskConstants';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 export default function ContentMain(props) {
@@ -9,34 +12,70 @@ export default function ContentMain(props) {
 
   // lstTask là tên do BE - API trả về đặt
 
+  const handleDragEnd = (result) => {
+    console.log('🚀 ~ file: ContentMain.js ~ line 13 ~ result', result);
+    let { source, destination } = result;
+
+    if (!result.destination) {
+      return;
+    }
+    if (
+      source.index === destination.index &&
+      source.droppableId === destination.droppableId
+    ) {
+      return;
+    }
+
+    //gọi api cập nhật lại status
+    dispatch({
+      type: UPDATE_STATUS_TASK_SAGA,
+      taskUpdateStatus: {
+        taskId: result.draggableId,
+        statusId: destination.droppableId,
+      },
+    });
+  };
+
   const renderCardTaskList = () => {
     return (
-      <DragDropContext>
+      <DragDropContext onDragEnd={handleDragEnd}>
         {projectDetail.lstTask?.map((taskListDetail, index) => {
           return (
-            <Droppable>
+            <Droppable key={index} droppableId={taskListDetail.statusId}>
               {(provided) => {
                 return (
                   <div
-                    key={index}
                     className="card pb-2"
                     style={{ width: '17rem', height: 'auto' }}
                   >
                     <div className="card-header">
                       {taskListDetail.statusName}
                     </div>
-                    <ul className="list-group list-group-flush">
+                    <ul
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                      key={index}
+                      className="list-group list-group-flush"
+                    >
                       {taskListDetail.lstTaskDeTail.map((task, index) => {
                         return (
-                          <Draggable>
+                          <Draggable
+                            key={task.taskId.toString()}
+                            index={index}
+                            draggableId={task.taskId.toString()}
+                          >
                             {(provided) => {
                               return (
                                 <li
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
                                   key={index}
                                   className="list-group-item"
                                   data-toggle="modal"
                                   data-target="#infoModal"
-                                  style={{ cursor: 'pointer' }}
+                                  // style={{ cursor: 'pointer' }}
+                                  // style xung đột với thư viện
                                   onClick={() => {
                                     dispatch({
                                       type: GET_TASK_DETAIL_SAGA,
@@ -88,6 +127,7 @@ export default function ContentMain(props) {
                           </Draggable>
                         );
                       })}
+                      {provided.placeholder}
                     </ul>
                   </div>
                 );
