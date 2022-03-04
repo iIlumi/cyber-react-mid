@@ -16,6 +16,8 @@ export default function ContentMain(props) {
     console.log('🚀 ~ file: ContentMain.js ~ line 13 ~ result', result);
     let { source, destination } = result;
 
+    let { projectId, taskId } = JSON.parse(result.draggableId); //Lấy ra chuỗi sau mỗi lần draggable
+
     if (!result.destination) {
       return;
     }
@@ -30,7 +32,8 @@ export default function ContentMain(props) {
     dispatch({
       type: UPDATE_STATUS_TASK_SAGA,
       taskUpdateStatus: {
-        taskId: result.draggableId,
+        taskId,
+        projectId,
         statusId: destination.droppableId,
       },
     });
@@ -51,22 +54,31 @@ export default function ContentMain(props) {
                     <div className="card-header">
                       {taskListDetail.statusName}
                     </div>
-                    <ul
+                    {/* 
+                    Việc giữ ul, li làm drag-drop khó vô vùng inline hơn
+                    Chuyển thành thẻ div với height 100% trước sẽ dễ nhận vùng drop vào     
+                    */}
+                    <div
                       ref={provided.innerRef}
                       {...provided.droppableProps}
                       key={index}
                       className="list-group list-group-flush"
+                      style={{ height: '100%' }}
                     >
                       {taskListDetail.lstTaskDeTail.map((task, index) => {
                         return (
                           <Draggable
                             key={task.taskId.toString()}
                             index={index}
-                            draggableId={task.taskId.toString()}
+                            draggableId={JSON.stringify({
+                              projectId: task.projectId,
+                              taskId: task.taskId,
+                            })}
                           >
                             {(provided) => {
                               return (
-                                <li
+                                // ul thay đổi thì đổi luôn li -> div
+                                <div
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
@@ -121,14 +133,14 @@ export default function ContentMain(props) {
                                       </div>
                                     </div>
                                   </div>
-                                </li>
+                                </div>
                               );
                             }}
                           </Draggable>
                         );
                       })}
                       {provided.placeholder}
-                    </ul>
+                    </div>
                   </div>
                 );
               }}

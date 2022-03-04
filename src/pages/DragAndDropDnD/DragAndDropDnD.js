@@ -56,7 +56,7 @@ export default function DragAndDropDnD(props) {
     // ------
     //Droppable bắt đầu kéo
     let index = state[source.droppableId].items.findIndex(
-      (item) => item.id == itemCopy.id
+      (item) => item.id === itemCopy.id
     );
     //Droppable thả vào
     let dropDestination = state[destination.droppableId].items;
